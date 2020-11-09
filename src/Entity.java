@@ -1,16 +1,27 @@
-public class OBJECT {
+public class Entity {
     protected static int size;
     protected double row;
     protected double column;
     protected int value;
-    public OBJECT(double row, double column){
-        this.column=column;
-        this.row=row;
-        this.value = (int)this.row*OBJECT.size+(int)this.column;
+
+    public Entity(double row, double column) {
+        this.column = column;
+        this.row = row;
+        this.value = (int) this.row * Entity.size + (int) this.column;
     }
-    public OBJECT(){
-        this( 0.00, 0.00);
+
+    public Entity() {
+        this(0.00, 0.00);
     }
+
+    public static int getSize() {
+        return size;
+    }
+
+    public static void setSize(int size) {
+        Entity.size = size;
+    }
+
     public double getColumn() {
         return column;
     }
@@ -20,7 +31,7 @@ public class OBJECT {
     }
 
     public int getValue() {
-        return (int)row*size+(int)column;
+        return (int) row * size + (int) column;
     }
 
     public void setValue(int value) {
@@ -33,14 +44,5 @@ public class OBJECT {
 
     public void setRow(double row) {
         this.row = row;
-    }
-
-
-    public static int getSize() {
-        return size;
-    }
-
-    public static void setSize(int size) {
-        OBJECT.size = size;
     }
 }
