@@ -5,15 +5,35 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
-    //Tọa độ X tính từ góc trái trên trong Canvas
-    protected int x;
+    private double x;
+    private double y;
 
-    //Tọa độ Y tính từ góc trái trên trong Canvas
-    protected int y;
+    public double getX() {
+        return x;
+    }
 
-    protected Image img;
+    public double getY() {
+        return y;
+    }
 
-    //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
+    public Image getImg() {
+        return img;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
+    }
+
+    private Image img;
+
     public Entity(int xUnit, int yUnit, Image img) {
         this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = yUnit * Sprite.SCALED_SIZE;
