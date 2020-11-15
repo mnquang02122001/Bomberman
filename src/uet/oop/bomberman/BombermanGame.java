@@ -22,7 +22,6 @@ public class BombermanGame extends Application {
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
     public static final String MAP_LV1 = "res/levels/Level1.txt";
-    public static int LEVEL;
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
@@ -50,18 +49,19 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+        createMap(MAP_LV1);
+        Entity bomberman = new Bomber(1, 1, Sprite.player_right);
+        Controller.input(scene, bomberman);
+        entities.add(bomberman);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                stillObjects.addAll(bomberman.bombs);
                 render();
                 update();
             }
         };
         timer.start();
-        createMap(MAP_LV1);
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right);
-        Controller.input(scene, bomberman);
-        entities.add(bomberman);
     }
 
     public void createMap(String path) throws FileNotFoundException {
@@ -84,6 +84,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        ;
     }
 
     public void render() {

@@ -4,8 +4,12 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.render.IRender;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Entity implements IRender {
-    protected final int MAX_ANIMATE = 6000;
+    protected final int MAX_ANIMATE = 6300;
+    public List<Bomb> bombs = new ArrayList<>();
     protected double x;
     protected double y;
     protected Sprite sprite;
