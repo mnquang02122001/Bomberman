@@ -2,15 +2,12 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import uet.oop.bomberman.controller.Controller;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -62,24 +59,8 @@ public class BombermanGame extends Application {
         };
         timer.start();
         createMap(MAP_LV1);
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if(keyEvent.getCode().equals(KeyCode.A) || keyEvent.getCode().equals(KeyCode.LEFT)){
-                    bomberman.setY(bomberman.getY()-1);
-                }
-                if(keyEvent.getCode().equals(KeyCode.W) || keyEvent.getCode().equals(KeyCode.UP)){
-                    bomberman.setX(bomberman.getX()-1);
-                }
-                if(keyEvent.getCode().equals(KeyCode.D) || keyEvent.getCode().equals(KeyCode.RIGHT)){
-                    bomberman.setY(bomberman.getY()+1);
-                }
-                if(keyEvent.getCode().equals(KeyCode.S) || keyEvent.getCode().equals(KeyCode.DOWN)){
-                    bomberman.setX(bomberman.getX()+1);
-                }
-            }
-        });
+        Entity bomberman = new Bomber(1, 1, Sprite.player_right);
+        Controller.input(scene, bomberman);
         entities.add(bomberman);
     }
 
@@ -90,11 +71,11 @@ public class BombermanGame extends Application {
             for (int j = 0; j < WIDTH; j++) {
                 Entity object;
                 if (s.charAt(j) == '#') {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
+                    object = new Wall(i, j, Sprite.wall);
                 } else if (s.charAt(j) == '*') {
-                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    object = new Brick(i, j, Sprite.brick);
                 } else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
+                    object = new Grass(i, j, Sprite.grass);
                 }
                 stillObjects.add(object);
             }
