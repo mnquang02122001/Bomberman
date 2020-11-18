@@ -5,8 +5,8 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Wall extends Entity {
 
-    public Wall(double x, double y, Sprite sprite) {
-        super(x, y, sprite);
+    public Wall(double xUnit, double yUnit, Sprite sprite) {
+        super(xUnit, yUnit, sprite);
     }
 
     @Override

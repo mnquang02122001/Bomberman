@@ -7,8 +7,8 @@ import java.util.Spliterator;
 
 public class Grass extends Entity {
 
-    public Grass(double x, double y, Sprite sprite) {
-        super(x, y, sprite);
+    public Grass(double xUnit, double yUnit, Sprite sprite) {
+        super(xUnit, yUnit, sprite);
     }
 
     @Override
