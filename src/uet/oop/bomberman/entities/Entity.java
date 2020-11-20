@@ -27,15 +27,15 @@ public abstract class Entity implements IRender {
     public Entity(double xUnit, double yUnit, Sprite sprite) {
         this.xUnit=xUnit;
         this.yUnit=yUnit;
-        this.value=(int)this.yUnit*width+(int)this.xUnit;
-        this.x = this.xUnit * Sprite.SCALED_SIZE;
+        this.value=(int)this.xUnit*width+(int)this.yUnit;
+        this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = this.yUnit * Sprite.SCALED_SIZE;
         this.sprite = sprite;
     }
     public void updateLocation(){
         this.x = this.xUnit * Sprite.SCALED_SIZE;
         this.y = this.yUnit * Sprite.SCALED_SIZE;
-        this.value=(int)this.yUnit*width+(int)this.xUnit;
+        this.value=(int)this.xUnit*width+(int)this.yUnit;
     }
     protected void animate() {
         if (animate < MAX_ANIMATE) {
