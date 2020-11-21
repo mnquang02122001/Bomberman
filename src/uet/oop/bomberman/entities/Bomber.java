@@ -41,6 +41,7 @@ public class Bomber extends Entity {
         gc.drawImage(sprite.getFxImage(), y, x);
     }
 
+
     @Override
     public void update() {
         animate();

@@ -107,10 +107,32 @@ public abstract class Entity implements IRender {
     }
 
     public abstract void update();
-    public static int upper(double a){
-        return (int)(a+1);
+    public boolean checkUp(){
+        return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0;
     }
-    public static int down(double a){
-        return a-(double)(int)a==0?(int)a-1:(int)a;
+    public boolean checkSideLeft(){
+        return Entity.check[(int)(yUnit)+Entity.width*(int)(xUnit)]==0;
     }
+    public boolean checkSideRight(){
+        return Entity.check[(int)(yUnit+0.5)+Entity.width*(int)(xUnit)]==0;
+    }
+    public boolean checkSideUp(){
+        return Entity.check[(int)(xUnit)*Entity.width+(int)(yUnit)]==0;
+    }
+    public boolean checkSideDown(){
+        return Entity.check[(int)(xUnit+0.75)*Entity.width+(int)(yUnit)]==0;
+    }
+
+    public boolean checkDown(){
+        return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0;
+    }
+
+    public boolean checkLeft(){
+        return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0;
+    }
+
+    public boolean checkRight(){
+        return Entity.check[(int)(yUnit+0.75)+Entity.width*(int)(xUnit)]==0;
+    }
+
 }

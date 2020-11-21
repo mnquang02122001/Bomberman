@@ -72,7 +72,7 @@ public class BombermanGame extends Application {
                 switch (event.getCode()) {
                     case UP:
                         bomberman.setDirection(0);
-                        if (bomberman.getMoving()==0&&Entity.check[(int)(bomberman.xUnit-0.25)*Entity.width+(int)(bomberman.yUnit)]==0) {
+                        if (bomberman.getMoving()==0&&bomberman.checkSideLeft()&&bomberman.checkUp()&&bomberman.checkSideRight()) {
                             bomberman.xUnit-=0.25;
                             bomberman.updateLocation();
 
@@ -80,7 +80,7 @@ public class BombermanGame extends Application {
                         break;
                     case DOWN:
                         bomberman.setDirection(1);
-                        if (bomberman.getMoving()==1&&Entity.check[(int)(bomberman.xUnit+1)*Entity.width+(int)(bomberman.yUnit)]==0) {
+                        if (bomberman.getMoving()==1&&bomberman.checkSideRight()&&bomberman.checkSideLeft()&&bomberman.checkDown()) {
                             bomberman.xUnit+=0.25;
                             bomberman.updateLocation();
 
@@ -88,7 +88,7 @@ public class BombermanGame extends Application {
                         break;
                     case LEFT:
                         bomberman.setDirection(2);
-                        if (bomberman.getMoving()==2&&Entity.check[(int)(bomberman.yUnit-0.25)+Entity.width*(int)(bomberman.xUnit)]==0) {
+                        if (bomberman.getMoving()==2&&bomberman.checkSideUp()&&bomberman.checkLeft()&&bomberman.checkSideDown()) {
                             bomberman.yUnit-=0.25;
                             bomberman.updateLocation();
                             System.out.print(Entity.check[bomberman.getValue()]);
@@ -96,7 +96,7 @@ public class BombermanGame extends Application {
                         break;
                     case RIGHT:
                         bomberman.setDirection(3);
-                        if (bomberman.getMoving()==3&&Entity.check[bomberman.getValue()]==0) {
+                        if (bomberman.getMoving()==3&&bomberman.checkRight()&&bomberman.checkSideUp()&&bomberman.checkSideDown()) {
                             bomberman.yUnit+=0.25;
                             bomberman.updateLocation();
                             System.out.print(Entity.check[bomberman.getValue()]);
