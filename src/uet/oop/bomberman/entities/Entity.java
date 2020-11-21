@@ -9,11 +9,12 @@ import java.util.List;
 
 public abstract class Entity implements IRender {
     protected final int MAX_ANIMATE = 6300;
+    public List<Bomb> bombs = new ArrayList<>();
     public static int width=31;
     public static int height=13;
     public double xUnit;
     public double yUnit;
-    public List<Bomb> bombs = new ArrayList<>();
+    protected int value;
     protected double x;
     protected double y;
     protected Sprite sprite;
@@ -21,22 +22,22 @@ public abstract class Entity implements IRender {
     protected int moving = -1;
     protected boolean alive = true;
     protected int animate = 0;
-    public int value;
-    public static int []check= new int[width * height];
+    public static int[] check=new int[width*height];
 
     public Entity(double xUnit, double yUnit, Sprite sprite) {
         this.xUnit=xUnit;
         this.yUnit=yUnit;
-        this.value=(int)this.xUnit*width+(int)this.yUnit;
         this.x = xUnit * Sprite.SCALED_SIZE;
-        this.y = this.yUnit * Sprite.SCALED_SIZE;
+        this.y = yUnit * Sprite.SCALED_SIZE;
         this.sprite = sprite;
+        this.value=(int)(xUnit+0.75)*width+(int)(yUnit+0.75);
     }
     public void updateLocation(){
-        this.x = this.xUnit * Sprite.SCALED_SIZE;
-        this.y = this.yUnit * Sprite.SCALED_SIZE;
-        this.value=(int)this.xUnit*width+(int)this.yUnit;
+        x = xUnit * Sprite.SCALED_SIZE;
+        y = yUnit * Sprite.SCALED_SIZE;
+        value=(int)(xUnit+0.75)*width+(int)(yUnit+0.75);
     }
+
     protected void animate() {
         if (animate < MAX_ANIMATE) {
             animate++;
@@ -61,45 +62,20 @@ public abstract class Entity implements IRender {
         this.direction = direction;
     }
 
-    public double getxUnit() {
-        return xUnit;
-    }
-
-    public double getyUnit() {
-        return yUnit;
-    }
-
-
     public int getValue() {
         return value;
-    }
-
-    public int getMoving() {
-        return moving;
-    }
-
-    public static int[] getCheck() {
-        return check;
-    }
-
-    public void setMoving(int moving) {
-        this.moving = moving;
-    }
-
-    public void setxUnit(double xUnit) {
-        this.xUnit = xUnit;
-    }
-
-    public void setyUnit(double yUnit) {
-        this.yUnit = yUnit;
     }
 
     public void setValue(int value) {
         this.value = value;
     }
 
-    public static void setCheck(int[] check) {
-        Entity.check = check;
+    public int getMoving() {
+        return moving;
+    }
+
+    public void setMoving(int moving) {
+        this.moving = moving;
     }
 
     public boolean isAlive() {
@@ -131,10 +107,10 @@ public abstract class Entity implements IRender {
     }
 
     public abstract void update();
-    public int upper(double a){
-        return (a-(double)(int)a==0)?(int)a-1:(int)a;
-    }
-    public int down(double a){
+    public static int upper(double a){
         return (int)(a+1);
+    }
+    public static int down(double a){
+        return a-(double)(int)a==0?(int)a-1:(int)a;
     }
 }

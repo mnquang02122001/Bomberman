@@ -1,5 +1,10 @@
 package uet.oop.bomberman;
-
+import javafx.animation.AnimationTimer;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import uet.oop.bomberman.controller.Controller;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -7,9 +12,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
-import uet.oop.bomberman.Controller;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
+
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -17,17 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static uet.oop.bomberman.entities.Entity.*;
-
 public class BombermanGame extends Application {
 
-    public static final int WIDTH = width;
-    public static final int HEIGHT = height;
+    public static final int WIDTH = Entity.width;
+    public static final int HEIGHT = Entity.height;
     public static final String MAP_LV1 = "res/levels/Level1.txt";
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
+
 
 
     public static void main(String[] args) {
@@ -53,18 +57,59 @@ public class BombermanGame extends Application {
 
         createMap(MAP_LV1);
         Entity bomberman = new Bomber(1, 1, Sprite.player_right);
-        Controller.input(scene, bomberman);
-        entities.add(bomberman);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                stillObjects.addAll(bomberman.bombs);
                 render();
                 update();
             }
         };
         timer.start();
+        entities.add(bomberman);
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case UP:
+                        bomberman.setDirection(0);
+                        if (bomberman.getMoving()==0&&Entity.check[(int)(bomberman.xUnit-0.25)*Entity.width+(int)(bomberman.yUnit)]==0) {
+                            bomberman.xUnit-=0.25;
+                            bomberman.updateLocation();
+
+                        }
+                        break;
+                    case DOWN:
+                        bomberman.setDirection(1);
+                        if (bomberman.getMoving()==1&&Entity.check[(int)(bomberman.xUnit+1)*Entity.width+(int)(bomberman.yUnit)]==0) {
+                            bomberman.xUnit+=0.25;
+                            bomberman.updateLocation();
+
+                        }
+                        break;
+                    case LEFT:
+                        bomberman.setDirection(2);
+                        if (bomberman.getMoving()==2&&Entity.check[(int)(bomberman.yUnit-0.25)+Entity.width*(int)(bomberman.xUnit)]==0) {
+                            bomberman.yUnit-=0.25;
+                            bomberman.updateLocation();
+                            System.out.print(Entity.check[bomberman.getValue()]);
+                        }
+                        break;
+                    case RIGHT:
+                        bomberman.setDirection(3);
+                        if (bomberman.getMoving()==3&&Entity.check[bomberman.getValue()]==0) {
+                            bomberman.yUnit+=0.25;
+                            bomberman.updateLocation();
+                            System.out.print(Entity.check[bomberman.getValue()]);
+
+                        }
+
+                        break;
+                    case SHIFT:  break;
+                }
+            }
+        });
     }
+
 
     public void createMap(String path) throws FileNotFoundException {
         Scanner sc = new Scanner(new FileReader(path));
@@ -74,14 +119,15 @@ public class BombermanGame extends Application {
                 Entity object;
                 if (s.charAt(j) == '#') {
                     object = new Wall(i, j, Sprite.wall);
-                    Entity.check[i*WIDTH+j]=2;
+                    Entity.check[object.getValue()]=2;
+
                 } else if (s.charAt(j) == '*') {
                     object = new Brick(i, j, Sprite.brick);
-                    Entity.check[i*WIDTH+j]=1;
+                    Entity.check[object.getValue()]=1;
 
                 } else {
                     object = new Grass(i, j, Sprite.grass);
-                    Entity.check[i*WIDTH+j]=0;
+                    Entity.check[object.getValue()]=0;
                 }
                 stillObjects.add(object);
             }
@@ -98,4 +144,8 @@ public class BombermanGame extends Application {
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
+
+
+
+
 }
