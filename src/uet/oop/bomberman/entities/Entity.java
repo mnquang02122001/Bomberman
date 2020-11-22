@@ -19,7 +19,7 @@ public abstract class Entity implements IRender {
     protected double y;
     protected Sprite sprite;
     protected int direction = -1;
-    protected int moving = -1;
+    protected boolean moving = false;
     protected boolean alive = true;
     protected int animate = 0;
     public static int[] check=new int[width*height];
@@ -70,11 +70,11 @@ public abstract class Entity implements IRender {
         this.value = value;
     }
 
-    public int getMoving() {
+    public boolean isMoving() {
         return moving;
     }
 
-    public void setMoving(int moving) {
+    public void setMoving(boolean moving) {
         this.moving = moving;
     }
 

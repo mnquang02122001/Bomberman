@@ -57,6 +57,7 @@ public class BombermanGame extends Application {
 
         createMap(MAP_LV1);
         Entity bomberman = new Bomber(1, 1, Sprite.player_right);
+        new Controller().input(scene, bomberman);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -66,48 +67,6 @@ public class BombermanGame extends Application {
         };
         timer.start();
         entities.add(bomberman);
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case UP:
-                        bomberman.setDirection(0);
-                        if (bomberman.getMoving()==0&&bomberman.checkSideLeft()&&bomberman.checkUp()&&bomberman.checkSideRight()) {
-                            bomberman.xUnit-=0.25;
-                            bomberman.updateLocation();
-
-                        }
-                        break;
-                    case DOWN:
-                        bomberman.setDirection(1);
-                        if (bomberman.getMoving()==1&&bomberman.checkSideRight()&&bomberman.checkSideLeft()&&bomberman.checkDown()) {
-                            bomberman.xUnit+=0.25;
-                            bomberman.updateLocation();
-
-                        }
-                        break;
-                    case LEFT:
-                        bomberman.setDirection(2);
-                        if (bomberman.getMoving()==2&&bomberman.checkSideUp()&&bomberman.checkLeft()&&bomberman.checkSideDown()) {
-                            bomberman.yUnit-=0.25;
-                            bomberman.updateLocation();
-                            System.out.print(Entity.check[bomberman.getValue()]);
-                        }
-                        break;
-                    case RIGHT:
-                        bomberman.setDirection(3);
-                        if (bomberman.getMoving()==3&&bomberman.checkRight()&&bomberman.checkSideUp()&&bomberman.checkSideDown()) {
-                            bomberman.yUnit+=0.25;
-                            bomberman.updateLocation();
-                            System.out.print(Entity.check[bomberman.getValue()]);
-
-                        }
-
-                        break;
-                    case SHIFT:  break;
-                }
-            }
-        });
     }
 
 
@@ -136,7 +95,6 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
-        ;
     }
 
     public void render() {
