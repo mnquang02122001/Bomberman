@@ -1,9 +1,10 @@
 package uet.oop.bomberman.entities;
-import uet.oop.bomberman.graphics.Sprite;
+
+import javafx.scene.image.Image;
 
 public class Brick extends Entity {
-    public Brick(double xUnit, double yUnit, Sprite sprite) {
-        super(xUnit, yUnit, sprite);
+    public Brick(int xUnit, int yUnit, Image img) {
+        super(xUnit, yUnit, img);
     }
 
     @Override
