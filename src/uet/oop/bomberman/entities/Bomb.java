@@ -1,10 +1,10 @@
 package uet.oop.bomberman.entities;
 
-import uet.oop.bomberman.graphics.Sprite;
+import javafx.scene.image.Image;
 
 public class Bomb extends Entity {
-    public Bomb(double x, double y, Sprite sprite) {
-        super(x, y, sprite);
+    public Bomb(int xUnit, int yUnit, Image img) {
+        super(xUnit, yUnit, img);
     }
 
     @Override

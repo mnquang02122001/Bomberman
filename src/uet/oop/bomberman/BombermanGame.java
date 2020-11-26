@@ -1,10 +1,5 @@
 package uet.oop.bomberman;
-import javafx.animation.AnimationTimer;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
-import uet.oop.bomberman.controller.Controller;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -12,9 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import uet.oop.bomberman.controller.Controller;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
-
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,15 +19,13 @@ import java.util.Scanner;
 
 public class BombermanGame extends Application {
 
-    public static final int WIDTH = Entity.width;
-    public static final int HEIGHT = Entity.height;
+    public static final int WIDTH = 31;
+    public static final int HEIGHT = 13;
     public static final String MAP_LV1 = "res/levels/Level1.txt";
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
-
-
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -50,14 +43,16 @@ public class BombermanGame extends Application {
 
         // Tao scene
         Scene scene = new Scene(root);
+        createMap(MAP_LV1);
+
+        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        entities.add(bomberman);
 
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
 
-        createMap(MAP_LV1);
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right);
-        new Controller().input(scene, bomberman);
+        Controller.input(scene, bomberman);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -66,9 +61,7 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
-        entities.add(bomberman);
     }
-
 
     public void createMap(String path) throws FileNotFoundException {
         Scanner sc = new Scanner(new FileReader(path));
@@ -77,16 +70,13 @@ public class BombermanGame extends Application {
             for (int j = 0; j < WIDTH; j++) {
                 Entity object;
                 if (s.charAt(j) == '#') {
-                    object = new Wall(i, j, Sprite.wall);
-                    Entity.check[object.getValue()]=2;
+                    object = new Wall(i, j, Sprite.wall.getFxImage());
 
                 } else if (s.charAt(j) == '*') {
-                    object = new Brick(i, j, Sprite.brick);
-                    Entity.check[object.getValue()]=1;
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
 
                 } else {
-                    object = new Grass(i, j, Sprite.grass);
-                    Entity.check[object.getValue()]=0;
+                    object = new Grass(i, j, Sprite.grass.getFxImage());
                 }
                 stillObjects.add(object);
             }
@@ -102,8 +92,6 @@ public class BombermanGame extends Application {
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
-
-
 
 
 }
