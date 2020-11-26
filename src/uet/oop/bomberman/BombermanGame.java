@@ -45,17 +45,17 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root);
         createMap(MAP_LV1);
 
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
-
+        Controller.input(scene, bomberman);
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
 
-        Controller.input(scene, bomberman);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                stillObjects.addAll(bomberman.getBombList());
                 render();
                 update();
             }
@@ -85,6 +85,9 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        for (Entity stillObject : stillObjects) {
+            stillObject.update();
+        }
     }
 
     public void render() {

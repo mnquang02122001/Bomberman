@@ -1,40 +1,45 @@
 package uet.oop.bomberman.controller;
 
 import javafx.scene.Scene;
+import uet.oop.bomberman.entities.Bomb;
+import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.graphics.Sprite;
 
 public class Controller {
-    public static void input(Scene scene, Entity bomberman) {
+    public static void input(Scene scene, Bomber bomberman) {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP:
-                    bomberman.goNorth = true;
+                    bomberman.setGoNorth(true);
                     break;
                 case DOWN:
-                    bomberman.goSouth = true;
+                    bomberman.setGoSouth(true);
                     break;
                 case LEFT:
-                    bomberman.goWest = true;
+                    bomberman.setGoWest(true);
                     break;
                 case RIGHT:
-                    bomberman.goEast = true;
+                    bomberman.setGoEast(true);
                     break;
+                case SPACE:
+                    bomberman.placeBomb(bomberman.getX()/Sprite.SCALED_SIZE, bomberman.getY()/Sprite.SCALED_SIZE );
             }
         });
 
         scene.setOnKeyReleased(event -> {
             switch (event.getCode()) {
                 case UP:
-                    bomberman.goNorth = false;
+                    bomberman.setGoNorth(false);
                     break;
                 case DOWN:
-                    bomberman.goSouth = false;
+                    bomberman.setGoSouth(false);
                     break;
                 case LEFT:
-                    bomberman.goWest = false;
+                    bomberman.setGoWest(false);
                     break;
                 case RIGHT:
-                    bomberman.goEast = false;
+                    bomberman.setGoEast(false);
                     break;
             }
         });

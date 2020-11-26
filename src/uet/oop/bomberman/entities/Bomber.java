@@ -4,13 +4,30 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Bomber extends Entity {
+    private List<Bomb> bombList = new ArrayList<>();
     public Bomber(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
+    public void addBomb(Bomb bomb){
+        bombList.add(bomb);
+    }
+    public void clearBomb(){
+        bombList.clear();
+    }
 
-    public void choose() {
+    public List<Bomb> getBombList() {
+        return bombList;
+    }
+    public void placeBomb(int x, int y){
+        bombList.add(new Bomb(x, y, Sprite.bomb.getFxImage()));
+    }
+
+    public void chooseImg() {
         if (goNorth) {
             img = Sprite.player_up.getFxImage();
             if (moving) {
@@ -41,9 +58,13 @@ public class Bomber extends Entity {
     }
 
     public void render(GraphicsContext gc) {
-        move();
-        choose();
-        gc.drawImage(img, y, x);
+        if(alive){
+            chooseImg();
+        }
+        else{
+            img = Sprite.player_dead1.getFxImage();
+        }
+        super.render(gc);
     }
 
     @Override
@@ -64,6 +85,7 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
+        move();
         animate();
     }
 }
