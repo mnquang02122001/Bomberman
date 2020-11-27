@@ -5,7 +5,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 
 public class Bomber extends Entity {
-    public Bomber(int x, int y, Sprite sprite) {
+    public Bomber(double x, double y, Sprite sprite) {
         super(x, y, sprite);
     }
 

@@ -56,7 +56,7 @@ public class BombermanGame extends Application {
         stage.show();
 
         createMap(MAP_LV1);
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right);
+        Entity bomberman = new Bomber(1.00, 1.00, Sprite.player_right);
         new Controller().input(scene, bomberman);
         AnimationTimer timer = new AnimationTimer() {
             @Override

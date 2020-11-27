@@ -107,32 +107,44 @@ public abstract class Entity implements IRender {
     }
 
     public abstract void update();
-    public boolean checkUp(){
-        return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0;
+
+
+    public boolean checkRightIn(){
+        if((int)(xUnit*10)%10==0) return Entity.check[(int)(yUnit+0.75)+Entity.width*(int)(xUnit)]==0;
+        return true;
     }
-    public boolean checkSideLeft(){
-        return Entity.check[(int)(yUnit)+Entity.width*(int)(xUnit)]==0;
+    public boolean checkRightOut(){
+        System.out.println(Entity.check[(int)(yUnit+0.75)+Entity.width*(int)(xUnit)]+" "+Entity.check[(int)(yUnit+0.75)+Entity.width*(int)(xUnit+1)]);
+        System.out.println(x!=(int)x);
+        if((int)(xUnit*10)%10!=0) return (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit)] == 0) && (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit + 1)] == 0);
+        return true;
     }
-    public boolean checkSideRight(){
-        return Entity.check[(int)(yUnit+0.5)+Entity.width*(int)(xUnit)]==0;
+    public boolean checkLeftIn(){
+        if((int)(xUnit*10)%10==0) return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0;
+        return true;
     }
-    public boolean checkSideUp(){
-        return Entity.check[(int)(xUnit)*Entity.width+(int)(yUnit)]==0;
+    public boolean checkLeftOut(){
+        System.out.println(Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]+" "+Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit+1)]);
+        if((int)(xUnit*10)%10!=0) return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0&&Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit+1)]==0;
+
+        return true;
     }
-    public boolean checkSideDown(){
-        return Entity.check[(int)(xUnit+0.75)*Entity.width+(int)(yUnit)]==0;
+    public boolean checkUpIn(){
+        if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0;
+        return true;
+    }
+    public boolean checkUpOut(){
+        if((int)(yUnit*10)%10!=0&&(int)((yUnit-0.25)*10)%10!=0) return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit+0.5)]==0;;
+        return true;
+    }
+    public boolean checkDownIn(){
+        if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0;
+        return true;
+    }
+    public boolean checkDownOut(){
+        if((int)(yUnit*10)%10!=0||(int)((yUnit-0.25)*10)%10!=0) return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit+0.5)]==0;
+        return true;
     }
 
-    public boolean checkDown(){
-        return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0;
-    }
-
-    public boolean checkLeft(){
-        return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0;
-    }
-
-    public boolean checkRight(){
-        return Entity.check[(int)(yUnit+0.75)+Entity.width*(int)(xUnit)]==0;
-    }
 
 }

@@ -11,7 +11,7 @@ public class Controller {
         scene.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode().equals(KeyCode.A) || keyEvent.getCode().equals(KeyCode.LEFT)){
                 bomberman.setDirection(2);
-                if (bomberman.checkSideUp()&&bomberman.checkLeft()&&bomberman.checkSideDown()) {
+                if (bomberman.checkLeftIn()&&bomberman.checkLeftOut()) {
                     bomberman.yUnit-=0.25;
                     bomberman.setMoving(true);
                     bomberman.updateLocation();
@@ -19,7 +19,7 @@ public class Controller {
             }
             if(keyEvent.getCode().equals(KeyCode.W) || keyEvent.getCode().equals(KeyCode.UP)){
                 bomberman.setDirection(0);
-                if (bomberman.checkSideLeft()&&bomberman.checkUp()&&bomberman.checkSideRight()) {
+                if (bomberman.checkUpOut()&&bomberman.checkUpIn()) {
                     bomberman.xUnit-=0.25;
                     bomberman.setMoving(true);
                     bomberman.updateLocation();
@@ -28,7 +28,7 @@ public class Controller {
             }
             if(keyEvent.getCode().equals(KeyCode.D) || keyEvent.getCode().equals(KeyCode.RIGHT)){
                 bomberman.setDirection(3);
-                if (bomberman.checkRight()&&bomberman.checkSideUp()&&bomberman.checkSideDown()) {
+                if (bomberman.checkRightIn()&&bomberman.checkRightOut()) {
                     bomberman.yUnit+=0.25;
                     bomberman.setMoving(true);
                     bomberman.updateLocation();
@@ -36,7 +36,7 @@ public class Controller {
             }
             if(keyEvent.getCode().equals(KeyCode.S) || keyEvent.getCode().equals(KeyCode.DOWN)){
                 bomberman.setDirection(1);
-                if (bomberman.checkSideRight()&&bomberman.checkSideLeft()&&bomberman.checkDown()) {
+                if (bomberman.checkDownIn()&&bomberman.checkDownOut()) {
                     bomberman.xUnit+=0.25;
                     bomberman.setMoving(true);
                     bomberman.updateLocation();
