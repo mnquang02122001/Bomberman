@@ -89,6 +89,7 @@ public class BombermanGame extends Application {
         entities.forEach(Entity::update);
         for (Entity stillObject : stillObjects) {
             stillObject.update();
+            //if(!stillObject.isAlive()) stillObjects.remove(stillObject);
         }
     }
 

@@ -94,6 +94,7 @@ public abstract class Entity implements IRender {
         this.yUnit=yUnit;
         this.img = img;
         this.value=(int)xUnit*width+(int)yUnit;
+        setAlive(true);
     }
     public void updateLocation(){
         this.x = xUnit * Sprite.SCALED_SIZE;
