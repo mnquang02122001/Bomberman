@@ -19,8 +19,8 @@ import java.util.Scanner;
 
 public class BombermanGame extends Application {
 
-    public static final int WIDTH = 31;
-    public static final int HEIGHT = 13;
+    public static final int WIDTH = Entity.width;
+    public static final int HEIGHT = Entity.height;
     public static final String MAP_LV1 = "res/levels/Level1.txt";
     private GraphicsContext gc;
     private Canvas canvas;
@@ -45,7 +45,7 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root);
         createMap(MAP_LV1);
 
-        Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        Bomber bomberman = new Bomber(1.00, 1.00, Sprite.player_right.getFxImage());
         entities.add(bomberman);
         Controller.input(scene, bomberman);
         // Them scene vao stage
@@ -71,12 +71,14 @@ public class BombermanGame extends Application {
                 Entity object;
                 if (s.charAt(j) == '#') {
                     object = new Wall(i, j, Sprite.wall.getFxImage());
+                    Entity.check[i*WIDTH+j]=2;
 
                 } else if (s.charAt(j) == '*') {
                     object = new Brick(i, j, Sprite.brick.getFxImage());
-
+                    Entity.check[i*WIDTH+j]=1;
                 } else {
                     object = new Grass(i, j, Sprite.grass.getFxImage());
+                    Entity.check[i*WIDTH+j]=0;
                 }
                 stillObjects.add(object);
             }

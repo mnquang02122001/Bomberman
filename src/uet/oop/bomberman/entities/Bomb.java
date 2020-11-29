@@ -6,11 +6,13 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomb extends Entity {
     private int explodeTime = 300;
-    public int explodeExistTime = 10;
+    public int explodeExistTime = 15;
     private boolean isExplode = false;
-    public Bomb(int xUnit, int yUnit, Image img) {
-        super(xUnit, yUnit, img);
+
+    public Bomb(double xUnit, double yUnit, Image img, boolean bomb){
+        super(xUnit, yUnit, img, bomb);
     }
+
     @Override
     public void render(GraphicsContext gc){
         if(isExplode){
