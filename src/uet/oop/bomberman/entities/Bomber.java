@@ -66,23 +66,36 @@ public class Bomber extends Entity {
         }
         super.render(gc);
     }
-/*
-    @Override
+
+
     public void move() {
-        int dx = 0, dy = 0;
-        if (goNorth && !goSouth && !goEast && !goWest) dx -= 1;
-        if (goSouth && !goNorth && !goEast && !goWest) dx += 1;
-        if (goEast && !goSouth && !goNorth && !goWest) dy += 1;
-        if (goWest && !goSouth && !goEast && !goNorth) dy -= 1;
-        if (dx != 0 || dy != 0) {
-            x += dx;
-            y += dy;
-            moving = true;
-        } else {
-            moving = false;
+
+        if (isGoNorth()&&checkUpOut()&&checkUpIn()) {
+            xUnit-=0.25;
+            setMoving(true);
+            updateLocation();
+            return ;
+        }
+        if (isGoSouth()&&checkDownIn()&&checkDownOut()) {
+            xUnit+=0.25;
+            setMoving(true);
+            updateLocation();
+            return ;
+        }
+        if (isGoWest()&&checkLeftIn()&&checkLeftOut()) {
+            yUnit-=0.25;
+            setMoving(true);
+            updateLocation();
+            return ;
+        }
+        if (isGoEast()&&checkRightIn()&&checkRightOut()) {
+            yUnit+=0.25;
+            setMoving(true);
+            updateLocation();
+            return ;
         }
     }
-*/
+
     @Override
     public void update() {
         move();

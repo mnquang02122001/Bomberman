@@ -133,8 +133,7 @@ public abstract class Entity implements IRender {
         return true;
     }
     public boolean checkRightOut(){
-        System.out.println(Entity.check[(int)(yUnit+0.75)+Entity.width*(int)(xUnit)]+" "+Entity.check[(int)(yUnit+0.75)+Entity.width*(int)(xUnit+1)]);
-        System.out.println(x!=(int)x);
+
         if((int)(xUnit*10)%10!=0) return (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit)] == 0) && (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit + 1)] == 0);
         return true;
     }
@@ -143,7 +142,7 @@ public abstract class Entity implements IRender {
         return true;
     }
     public boolean checkLeftOut(){
-        System.out.println(Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]+" "+Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit+1)]);
+
         if((int)(xUnit*10)%10!=0) return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0&&Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit+1)]==0;
 
         return true;

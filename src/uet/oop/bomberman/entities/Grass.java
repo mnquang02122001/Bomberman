@@ -6,7 +6,6 @@ import uet.oop.bomberman.graphics.Sprite;
 
 
 public class Grass extends Entity {
-    int time=0;
     private boolean isExplode = false;
 
     public Grass(int xUnit, int yUnit, Image img) {
@@ -19,12 +18,7 @@ public class Grass extends Entity {
     }
     public void render(GraphicsContext gc){
         if(check[value]==-1) {
-            if (time < 150) {
-                time++;
-                img = Sprite.bomb_exploded2.getFxImage();
-            } else {
-                time=0;
-            }
+            img = Sprite.bomb_exploded2.getFxImage();
         }
         else{
             img = Sprite.grass.getFxImage();
