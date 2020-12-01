@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.render.IRender;
 
@@ -9,8 +10,8 @@ public abstract class Entity implements IRender {
     protected final int MAX_ANIMATE = 6300;
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected double x;
-    public static int width=31;
-    public static int height=13;
+    public static int width= BombermanGame.WIDTH;
+    public static int height= BombermanGame.HEIGHT;
     //Tọa độ Y tính từ góc trái trên trong Canvas
     protected double y;
     public double xUnit;
@@ -177,7 +178,7 @@ public abstract class Entity implements IRender {
         return true;
     }
     */
-
+    public void chooseImg(){}
     public abstract void update();
 
 }
