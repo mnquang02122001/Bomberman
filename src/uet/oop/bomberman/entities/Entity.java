@@ -96,16 +96,22 @@ public abstract class Entity implements IRender {
         this.value=(int)xUnit*width+(int)yUnit;
         setAlive(true);
     }
-    public void updateLocation(){
+    public void updateLocationX(){
         this.x = xUnit * Sprite.SCALED_SIZE;
+        //this.y = yUnit * Sprite.SCALED_SIZE;
+        //this.value=(int)xUnit*width+(int)yUnit;
+    }
+    public void updateLocationY(){
         this.y = yUnit * Sprite.SCALED_SIZE;
-        this.value=(int)xUnit*width+(int)yUnit;
+        //this.y = yUnit * Sprite.SCALED_SIZE;
+        //this.value=(int)xUnit*width+(int)yUnit;
     }
     public Entity(double xUnit, double yUnit, Image img, boolean bomb) {
         if(bomb==true) {
             this.xUnit = new Double(bombLocation(xUnit));
             this.yUnit = new Double(bombLocation(yUnit));
-            updateLocation();
+            updateLocationX();
+            updateLocationY();
         }
 
     }
@@ -130,39 +136,47 @@ public abstract class Entity implements IRender {
     }
     public boolean checkRightIn(){
         if((int)(xUnit*10)%10==0) return Entity.check[(int)(yUnit+0.75)+Entity.width*(int)(xUnit)]==0;
-        return true;
+        return (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit)] == 0) && (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit + 1)] == 0);
     }
-    public boolean checkRightOut(){
+    /*public boolean checkRightOut(){
 
         if((int)(xUnit*10)%10!=0) return (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit)] == 0) && (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit + 1)] == 0);
         return true;
     }
+    */
+
     public boolean checkLeftIn(){
         if((int)(xUnit*10)%10==0) return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0;
-        return true;
+        return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0&&Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit+1)]==0;
+
     }
-    public boolean checkLeftOut(){
+    /*public boolean checkLeftOut(){
 
         if((int)(xUnit*10)%10!=0) return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0&&Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit+1)]==0;
 
         return true;
     }
+    */
+
     public boolean checkUpIn(){
         if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0;
-        return true;
+        return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit+0.5)]==0;
     }
-    public boolean checkUpOut(){
-        if((int)(yUnit*10)%10!=0&&(int)((yUnit-0.25)*10)%10!=0) return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit+0.5)]==0;;
+
+    /*public boolean checkUpOut(){
+        if((int)(yUnit*10)%10!=0&&(int)((yUnit-0.25)*10)%10!=0) return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit+0.5)]==0;
         return true;
-    }
+    }*/
     public boolean checkDownIn(){
         if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0;
-        return true;
+        return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit+0.5)]==0;
     }
+    /*
     public boolean checkDownOut(){
         if((int)(yUnit*10)%10!=0||(int)((yUnit-0.25)*10)%10!=0) return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit+0.5)]==0;
         return true;
     }
+    */
 
     public abstract void update();
 

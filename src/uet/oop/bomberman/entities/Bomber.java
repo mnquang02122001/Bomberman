@@ -31,30 +31,34 @@ public class Bomber extends Entity {
         if (goNorth) {
             img = Sprite.player_up.getFxImage();
             if (moving) {
-                img = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 20).getFxImage();
+                img = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 50).getFxImage();
             }
+            return ;
         }
         if (goSouth) {
             img = Sprite.player_down.getFxImage();
             if (moving) {
-                img = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 20).getFxImage();
+                img = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 50).getFxImage();
             }
+            return ;
         }
         if (goWest) {
             img = Sprite.player_left.getFxImage();
             if (moving) {
-                img = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 20).getFxImage();
+                img = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 50).getFxImage();
             }
+            return ;
         }
         if (goEast) {
             img = Sprite.player_right.getFxImage();
             if (moving) {
-                img = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 20).getFxImage();
+                img = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 50).getFxImage();
             }
+            return ;
         }
-        if (!moving) {
-            img = Sprite.player_down.getFxImage();
-        }
+
+        img = Sprite.player_down.getFxImage();
+
     }
 
     public void render(GraphicsContext gc) {
@@ -70,30 +74,31 @@ public class Bomber extends Entity {
 
     public void move() {
 
-        if (isGoNorth()&&checkUpOut()&&checkUpIn()) {
+        if (isGoNorth()/*&&checkUpOut()*/&&checkUpIn()) {
+            setMoving(true);
             xUnit-=0.25;
-            setMoving(true);
-            updateLocation();
+            updateLocationX();
             return ;
         }
-        if (isGoSouth()&&checkDownIn()&&checkDownOut()) {
+        if (isGoSouth()&&checkDownIn()/*&&checkDownOut()*/) {
+            setMoving(true);
             xUnit+=0.25;
-            setMoving(true);
-            updateLocation();
+            updateLocationX();
             return ;
         }
-        if (isGoWest()&&checkLeftIn()&&checkLeftOut()) {
+        if (isGoWest()&&checkLeftIn()/*&&checkLeftOut()*/) {
+            setMoving(true);
             yUnit-=0.25;
-            setMoving(true);
-            updateLocation();
+            updateLocationY();
             return ;
         }
-        if (isGoEast()&&checkRightIn()&&checkRightOut()) {
+        if (isGoEast()&&checkRightIn()/*&&checkRightOut()*/) {
+            setMoving(true);
             yUnit+=0.25;
-            setMoving(true);
-            updateLocation();
+            updateLocationY();
             return ;
         }
+        setMoving(false);
     }
 
     @Override

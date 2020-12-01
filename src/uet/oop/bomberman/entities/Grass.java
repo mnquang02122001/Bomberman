@@ -14,15 +14,12 @@ public class Grass extends Entity {
 
     @Override
     public void update() {
-
-    }
-    public void render(GraphicsContext gc){
         if(check[value]==-1) {
             img = Sprite.bomb_exploded2.getFxImage();
         }
         else{
             img = Sprite.grass.getFxImage();
         }
-        super.render(gc);
     }
+
 }
