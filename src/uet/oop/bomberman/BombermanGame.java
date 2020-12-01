@@ -9,6 +9,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.controller.Controller;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.enemy.Balloon;
+import uet.oop.bomberman.entities.tiles.Brick;
+import uet.oop.bomberman.entities.tiles.Grass;
+import uet.oop.bomberman.entities.tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.FileNotFoundException;
@@ -19,8 +23,8 @@ import java.util.Scanner;
 
 public class BombermanGame extends Application {
 
-    public static final int WIDTH = Entity.width;
-    public static final int HEIGHT = Entity.height;
+    public static final int WIDTH = 31;
+    public static final int HEIGHT = 13;
     public static final String MAP_LV1 = "res/levels/Level1.txt";
     private GraphicsContext gc;
     private Canvas canvas;
@@ -45,8 +49,9 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root);
         createMap(MAP_LV1);
 
-        Bomber bomberman = new Bomber(1.00, 1.00, Sprite.player_right.getFxImage());
+        Bomber bomberman = new Bomber(1.00, 1.00, Sprite.player_left.getFxImage());
         entities.add(bomberman);
+        entities.add(new Balloon(3, 3, Sprite.balloom_left1.getFxImage()));
         Controller.input(scene, bomberman);
         // Them scene vao stage
         stage.setScene(scene);
@@ -55,7 +60,7 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                stillObjects.addAll(bomberman.getBombList());
+                //stillObjects.addAll(bomberman.getBombList());
                 render();
                 update();
             }

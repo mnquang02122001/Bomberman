@@ -26,7 +26,7 @@ public class Bomber extends Entity {
     public void placeBomb(double x, double y){
         bombList.add(new Bomb(x, y, Sprite.bomb.getFxImage(), true));
     }
-
+    @Override
     public void chooseImg() {
         if (goNorth) {
             img = Sprite.player_up.getFxImage();
