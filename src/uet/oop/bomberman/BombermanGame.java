@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import uet.oop.bomberman.Music.Music;
 import uet.oop.bomberman.controller.Controller;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.enemy.Balloon;
@@ -26,6 +27,7 @@ public class BombermanGame extends Application {
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
     public static final String MAP_LV1 = "res/levels/Level1.txt";
+    public static final String THEME_MUSIC_PATH = "res/music/theme.mp3";
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
@@ -48,15 +50,14 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
         createMap(MAP_LV1);
-
         Bomber bomberman = new Bomber(1.00, 1.00, Sprite.player_left.getFxImage());
         entities.add(bomberman);
         entities.add(new Balloon(3, 3, Sprite.balloom_left1.getFxImage()));
         Controller.input(scene, bomberman);
+        Music.play(THEME_MUSIC_PATH);
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
