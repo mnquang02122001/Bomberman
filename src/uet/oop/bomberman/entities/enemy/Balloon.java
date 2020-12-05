@@ -8,7 +8,6 @@ import uet.oop.bomberman.graphics.Sprite;
 public class Balloon extends Enemy {
     public Balloon(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
-        ai = new AI();
     }
 
     public void chooseImg() {

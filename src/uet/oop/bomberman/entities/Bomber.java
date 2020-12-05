@@ -13,16 +13,11 @@ public class Bomber extends Entity {
     public Bomber(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
-    public void addBomb(Bomb bomb){
-        bombList.add(bomb);
-    }
-    public void clearBomb(){
-        bombList.clear();
-    }
     public List<Bomb> getBombList() {
         return bombList;
     }
     public void placeBomb(double x, double y){
+        if(bombList.isEmpty())
         bombList.add(new Bomb(x, y, Sprite.bomb.getFxImage(), true));
     }
     @Override
@@ -69,13 +64,6 @@ public class Bomber extends Entity {
         }
         super.render(gc);
     }
-
-
-    public void move() {
-
-        super.move();
-    }
-
     @Override
     public void update() {
         move();
