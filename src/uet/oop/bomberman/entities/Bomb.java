@@ -31,10 +31,12 @@ public class Bomb extends Entity {
     }
     @Override
     public void update() {
-        int value1 = (int) (xUnit + 1) * width + (int) yUnit;
-        int value2 = (int) (xUnit - 1) * width + (int) yUnit;
-        int value3 = (int) xUnit * width + (int) yUnit + 1;
-        int value4 = (int) xUnit * width + (int) yUnit - 1;
+        int x1 = (int) (xUnit + 1);
+        int y = (int) yUnit;
+        int x2 = (int) (xUnit - 1);
+        int x = (int) xUnit;
+        int y1 = (int) yUnit + 1;
+        int y2 = (int) yUnit - 1;
         if(explodeTime > 0){
             isExplode = false;
             explodeTime--;
@@ -43,21 +45,16 @@ public class Bomb extends Entity {
 
             isExplode = true;
             if(explodeExistTime>0) {
-                explodeExistTime--;
-
-
-
-                if (Entity.check[value1] <= 1) Entity.check[value1] = -1;
-                if (Entity.check[value2] <= 1) Entity.check[value2] = -1;
-                if (Entity.check[value3] <= 1) Entity.check[value3] = -1;
-                if (Entity.check[value4] <= 1) Entity.check[value4] = -1;
+                if (Entity.check[x1][y] <= 1) Entity.check[x1][y] = -1;
+                if (Entity.check[x2][y] <= 1) Entity.check[x2][y] = -1;
+                if (Entity.check[x][y1] <= 1) Entity.check[x][y1] = -1;
+                if (Entity.check[x][y2] <= 1) Entity.check[x][y2] = -1;
             }
             else{
-                if (Entity.check[value1] == -1) Entity.check[value1] = 0;
-                if (Entity.check[value2] == -1) Entity.check[value2] = 0;
-                if (Entity.check[value3] == -1) Entity.check[value3] = 0;
-                if (Entity.check[value4] == -1) Entity.check[value4] = 0;
-
+                if (Entity.check[x1][y] <= 1) Entity.check[x1][y] = 0;
+                if (Entity.check[x2][y] <= 1) Entity.check[x2][y] = 0;
+                if (Entity.check[x][y1] <= 1) Entity.check[x][y1] = 0;
+                if (Entity.check[x][y2] <= 1) Entity.check[x][y2] = 0;
             }
 
         }

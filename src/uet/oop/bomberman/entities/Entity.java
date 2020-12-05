@@ -20,7 +20,7 @@ public abstract class Entity implements IRender {
     protected boolean goNorth, goSouth, goEast, goWest, moving;
     protected Image img;
     public int value;
-    public static int []check=new int[width*height];
+    public static int [][]check=new int[height][width];
     protected int animate = 0;
 
     public boolean isAlive() {
@@ -100,12 +100,12 @@ public abstract class Entity implements IRender {
     public void updateLocationX(){
         this.x = xUnit * Sprite.SCALED_SIZE;
         //this.y = yUnit * Sprite.SCALED_SIZE;
-        //this.value=(int)xUnit*width+(int)yUnit;
+        this.value=(int)xUnit*width+(int)yUnit;
     }
     public void updateLocationY(){
         this.y = yUnit * Sprite.SCALED_SIZE;
         //this.y = yUnit * Sprite.SCALED_SIZE;
-        //this.value=(int)xUnit*width+(int)yUnit;
+        this.value=(int)xUnit*width+(int)yUnit;
     }
     public Entity(double xUnit, double yUnit, Image img, boolean bomb) {
         if(bomb==true) {
@@ -132,12 +132,9 @@ public abstract class Entity implements IRender {
     public void render(GraphicsContext gc) {
         gc.drawImage(img, y, x);
     }
-
-    public void move() {
-    }
     public boolean checkRightIn(){
-        if((int)(xUnit*10)%10==0) return Entity.check[(int)(yUnit+0.75)+Entity.width*(int)(xUnit)]==0;
-        return (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit)] == 0) && (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit + 1)] == 0);
+        if((int)(xUnit*10)%10==0) return Entity.check[(int)(xUnit)][(int)(yUnit+0.75)]==0;
+        return Entity.check[(int)(xUnit)][(int)(yUnit+0.75)]==0 && Entity.check[(int)(xUnit+1)][(int)(yUnit+0.75)]==0;
     }
     /*public boolean checkRightOut(){
 
@@ -147,8 +144,8 @@ public abstract class Entity implements IRender {
     */
 
     public boolean checkLeftIn(){
-        if((int)(xUnit*10)%10==0) return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0;
-        return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0&&Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit+1)]==0;
+        if((int)(xUnit*10)%10==0) return Entity.check[(int)(xUnit)][(int)(yUnit-0.25)]==0;
+        return Entity.check[(int)(xUnit)][(int)(yUnit-0.25)]==0&&Entity.check[(int)(xUnit+1)][(int)(yUnit-0.25)]==0;
 
     }
     /*public boolean checkLeftOut(){
@@ -160,24 +157,42 @@ public abstract class Entity implements IRender {
     */
 
     public boolean checkUpIn(){
-        if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0;
-        return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit+0.5)]==0;
+        if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit-0.25)][(int)(yUnit)]==0;
+        return Entity.check[(int)(xUnit)][(int)(yUnit-0.25)]==0&&Entity.check[(int)(xUnit)][(int)(yUnit+0.5)]==0;
+    }
+    public boolean checkDownIn(){
+        if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit+1)][(int)(yUnit)]==0;
+        return Entity.check[(int)(xUnit+1)][(int)(yUnit)]==0&&Entity.check[(int)(xUnit+1)][(int)(yUnit+5)]==0;
+    }
+    public void move() {
+        if (isGoNorth()/*&&checkUpOut()*/&&checkUpIn()) {
+            setMoving(true);
+            xUnit-=0.25;
+            updateLocationX();
+            return ;
+        }
+        if (isGoSouth()&&checkDownIn()/*&&checkDownOut()*/) {
+            setMoving(true);
+            xUnit+=0.25;
+            updateLocationX();
+            return ;
+        }
+        if (isGoWest()&&checkLeftIn()/*&&checkLeftOut()*/) {
+            setMoving(true);
+            yUnit-=0.25;
+            updateLocationY();
+            return ;
+        }
+        if (isGoEast()&&checkRightIn()/*&&checkRightOut()*/) {
+            setMoving(true);
+            yUnit+=0.25;
+            updateLocationY();
+            return ;
+        }
+        setMoving(false);
     }
 
-    /*public boolean checkUpOut(){
-        if((int)(yUnit*10)%10!=0&&(int)((yUnit-0.25)*10)%10!=0) return Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit-0.25)*Entity.width+(int)(yUnit+0.5)]==0;
-        return true;
-    }*/
-    public boolean checkDownIn(){
-        if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0;
-        return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit+0.5)]==0;
-    }
-    /*
-    public boolean checkDownOut(){
-        if((int)(yUnit*10)%10!=0||(int)((yUnit-0.25)*10)%10!=0) return Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit)]==0&&Entity.check[(int)(xUnit+1)*Entity.width+(int)(yUnit+0.5)]==0;
-        return true;
-    }
-    */
+
     public void chooseImg(){}
     public abstract void update();
 

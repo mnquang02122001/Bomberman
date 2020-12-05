@@ -77,14 +77,14 @@ public class BombermanGame extends Application {
                 Entity object;
                 if (s.charAt(j) == '#') {
                     object = new Wall(i, j, Sprite.wall.getFxImage());
-                    Entity.check[i*WIDTH+j]=2;
+                    Entity.check[i][j]=2;
 
                 } else if (s.charAt(j) == '*') {
                     object = new Brick(i, j, Sprite.brick.getFxImage());
-                    Entity.check[i*WIDTH+j]=1;
+                    Entity.check[i][j]=1;
                 } else {
                     object = new Grass(i, j, Sprite.grass.getFxImage());
-                    Entity.check[i*WIDTH+j]=0;
+                    Entity.check[i][j]=0;
                 }
                 stillObjects.add(object);
             }
@@ -102,6 +102,7 @@ public class BombermanGame extends Application {
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
+
         entities.forEach(g -> g.render(gc));
     }
 

@@ -25,7 +25,7 @@ public class Controller {
 
                     break;
                 case SPACE:
-                    bomberman.placeBomb(bomberman.getX()/Sprite.SCALED_SIZE, bomberman.getY()/Sprite.SCALED_SIZE );
+                    bomberman.placeBomb(bomberman.xUnit, bomberman.yUnit);
                     break;
 
             }
