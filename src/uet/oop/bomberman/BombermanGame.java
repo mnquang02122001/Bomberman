@@ -61,7 +61,7 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                //stillObjects.addAll(bomberman.getBombList());
+                stillObjects.addAll(bomberman.getBombList());
                 render();
                 update();
             }

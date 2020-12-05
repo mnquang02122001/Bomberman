@@ -16,7 +16,7 @@ public class Grass extends Entity {
     @Override
     public void update() {
         if(check[value/width][value%width]==-1) {
-            img = Sprite.bomb_exploded2.getFxImage();
+                img = Sprite.bomb_exploded2.getFxImage();
         }
         else{
             img = Sprite.grass.getFxImage();
