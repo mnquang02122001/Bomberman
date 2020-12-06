@@ -2,6 +2,8 @@ package uet.oop.bomberman.controller;
 
 import javafx.scene.Scene;
 import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.Bomb;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Controller {
@@ -25,7 +27,8 @@ public class Controller {
 
                     break;
                 case SPACE:
-                    bomberman.placeBomb(bomberman.xUnit, bomberman.yUnit);
+
+                    BombermanGame.entities.add(new Bomb(bomberman.xUnit, bomberman.yUnit, Sprite.bomb.getFxImage(), true));
                     break;
 
             }

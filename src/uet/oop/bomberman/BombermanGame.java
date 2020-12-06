@@ -2,6 +2,9 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -30,8 +33,11 @@ public class BombermanGame extends Application {
     public static final String THEME_MUSIC_PATH = "res/music/theme.mp3";
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> entities = new ArrayList<>();
+    private static List<Entity> stillObjects = new ArrayList<>();
+    private static boolean isFirst=true;
+
+
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -50,23 +56,32 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
         createMap(MAP_LV1);
-        Bomber bomberman = new Bomber(1.00, 1.00, Sprite.player_left.getFxImage());
+        Bomber bomberman = new Bomber(1.000, 1.000, Sprite.player_left.getFxImage());
         entities.add(bomberman);
         entities.add(new Balloon(3, 3, Sprite.balloom_left1.getFxImage()));
-        Controller.input(scene, bomberman);
+
         Music.play(THEME_MUSIC_PATH);
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
+
+
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                //stillObjects.addAll(bomberman.getBombList());
                 render();
                 update();
             }
         };
         timer.start();
+        Controller.input(scene, bomberman);
+
+
+
+
+
+
     }
 
     public void createMap(String path) throws FileNotFoundException {
@@ -79,6 +94,7 @@ public class BombermanGame extends Application {
                     object = new Wall(i, j, Sprite.wall.getFxImage());
                     Entity.check[i][j]=2;
 
+
                 } else if (s.charAt(j) == '*') {
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                     Entity.check[i][j]=1;
@@ -86,23 +102,27 @@ public class BombermanGame extends Application {
                     object = new Grass(i, j, Sprite.grass.getFxImage());
                     Entity.check[i][j]=0;
                 }
+                Entity.link.put(object.value, object);
                 stillObjects.add(object);
             }
         }
     }
 
     public void update() {
-        entities.forEach(Entity::update);
-        for (Entity stillObject : stillObjects) {
-            stillObject.update();
-            //if(!stillObject.isAlive()) stillObjects.remove(stillObject);
+
+        for (Entity entity : entities) {
+            if(!entity.isAlive()) entities.remove(entity);
+            else entity.update();
         }
+        //System.out.println(entities.size());
+
     }
+
+
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
-
+        stillObjects.forEach(g->g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
 

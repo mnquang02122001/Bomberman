@@ -2,11 +2,16 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomb extends Entity {
-    private int explodeTime = 800;
-    public int explodeExistTime = 150;
+    int once1=0;
+    int once2=0;
+    int once3=0;
+    int once4=0;
+    private int explodeTime = 100;
+    public int explodeExistTime = 20;
     private boolean isExplode = false;
     int time=0;
     public Bomb(double xUnit, double yUnit, Image img, boolean bomb){
@@ -17,11 +22,14 @@ public class Bomb extends Entity {
     public void render(GraphicsContext gc){
         if(isExplode) {
             if (explodeExistTime>0) {
+                Bomber.danger=true;
                 explodeExistTime--;
                 img = Sprite.bomb_exploded2.getFxImage();
+                System.out.println(Entity.check[value/width][value%width]);
             } else {
-                img=Sprite.grass.getFxImage();
-
+                //img=Sprite.grass.getFxImage();
+                Bomber.danger=false;
+                setAlive(false);
             }
         }
         else{
@@ -42,19 +50,49 @@ public class Bomb extends Entity {
             explodeTime--;
         }
         else{
-
             isExplode = true;
             if(explodeExistTime>0) {
-                if (Entity.check[x1][y] <= 1) Entity.check[x1][y] = -1;
-                if (Entity.check[x2][y] <= 1) Entity.check[x2][y] = -1;
-                if (Entity.check[x][y1] <= 1) Entity.check[x][y1] = -1;
-                if (Entity.check[x][y2] <= 1) Entity.check[x][y2] = -1;
+                if (Entity.check[x1][y] <= 1) {
+                    Entity.check[x1][y] = -1;
+                    if(once1==0) {
+                        once1--;
+                        link.get(x1*width+y).setAlive(true);
+                        BombermanGame.entities.add(0, link.get(x1 * width + y));
+                    }
+                }
+                if (Entity.check[x2][y] <= 1) {
+                    Entity.check[x2][y] = -1;
+                    if(once2==0) {
+                        once2--;
+                        link.get(x2*width+y).setAlive(true);
+                        BombermanGame.entities.add(0, link.get(x2 * width + y));
+                    }
+
+                }
+                if (Entity.check[x][y1] <= 1) {
+                    Entity.check[x][y1] = -1;
+                    if (once3 == 0) {
+                        once3--;
+                        link.get(x*width+y1).setAlive(true);
+                        BombermanGame.entities.add(0, link.get(x * width + y1));
+                    }
+                }
+                if (Entity.check[x][y2] <= 1){
+                    Entity.check[x][y2] = -1;
+                    if (once4 == 0) {
+                        once4--;
+                        link.get(x*width+y2).setAlive(true);
+                        BombermanGame.entities.add(0, link.get(x * width + y2));
+                    }
+                }
             }
             else{
+                System.out.println("hello");
                 if (Entity.check[x1][y] <= 1) Entity.check[x1][y] = 0;
                 if (Entity.check[x2][y] <= 1) Entity.check[x2][y] = 0;
                 if (Entity.check[x][y1] <= 1) Entity.check[x][y1] = 0;
                 if (Entity.check[x][y2] <= 1) Entity.check[x][y2] = 0;
+
             }
 
         }

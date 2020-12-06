@@ -7,7 +7,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 
 public class Grass extends Entity {
-    private boolean isExplode = false;
+
 
     public Grass(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -20,6 +20,8 @@ public class Grass extends Entity {
         }
         else{
             img = Sprite.grass.getFxImage();
+            setAlive(false);
+
         }
     }
 

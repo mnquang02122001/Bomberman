@@ -9,15 +9,19 @@ public class Brick extends Entity {
     public Brick(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
-    @Override
+
+
     public void update() {
         if(check[value/width][value%width]==-1) {
             img = Sprite.bomb_exploded2.getFxImage();
+
         }
         else{
             if(check[value/width][value%width]==1)
                 img = Sprite.brick.getFxImage();
             else img=Sprite.grass.getFxImage();
+            setAlive(false);
+
         }
     }
 

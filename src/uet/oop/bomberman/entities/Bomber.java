@@ -10,8 +10,11 @@ import java.util.List;
 
 public class Bomber extends Entity {
     private List<Bomb> bombList = new ArrayList<>();
+    private int life;
+    public static boolean danger=false;
     public Bomber(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
+        life=3;
     }
     public void addBomb(Bomb bomb){
         bombList.add(bomb);
@@ -19,12 +22,15 @@ public class Bomber extends Entity {
     public void clearBomb(){
         bombList.clear();
     }
-    public List<Bomb> getBombList() {
-        return bombList;
+    /*public List<Bomb> getBombList() {
+        //return bombList;
     }
+
+    */
     public void placeBomb(double x, double y){
         bombList.add(new Bomb(x, y, Sprite.bomb.getFxImage(), true));
     }
+
     @Override
     public void chooseImg() {
         if (goNorth) {
@@ -71,14 +77,12 @@ public class Bomber extends Entity {
     }
 
 
-    public void move() {
 
-        super.move();
-    }
 
     @Override
     public void update() {
-        move();
+        move(0.125);
         animate();
     }
+
 }
