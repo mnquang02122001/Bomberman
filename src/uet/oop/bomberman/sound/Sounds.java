@@ -13,10 +13,10 @@ public class Sounds {
 
     public Sounds() {
         try {
-            AudioInputStream bgAudio = AudioSystem.getAudioInputStream(new File("sounds/Battle.mid"));
+            AudioInputStream bgAudio = AudioSystem.getAudioInputStream(new File("sounds/Battle.mp3"));
             bg = AudioSystem.getClip();
             bg.open(bgAudio);
-            AudioInputStream explosionAudio = AudioSystem.getAudioInputStream(new File("sounds/Explosion.mid"));
+            AudioInputStream explosionAudio = AudioSystem.getAudioInputStream(new File("sounds/Explosion.mp3"));
             explosion = AudioSystem.getClip();
             explosion.open(explosionAudio);
         } catch (Exception e) {
