@@ -9,7 +9,8 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.util.Random;
 
 public abstract class Enemy extends Entity {
-    private static int timeMove=2;
+    //private static int timeWaiting=10;
+    private static int timeMove=20;
     protected AI ai;
     public Enemy(double xUnit, double yUnit, Image img){
         super(xUnit, yUnit, img);
@@ -45,15 +46,20 @@ public abstract class Enemy extends Entity {
     }
     public void update(){
 
-        if(timeMove>0&&isMoving()){
+
+
+        if(timeMove>0){
             timeMove--;
+
+
         }
         else{
-            timeMove=2;
+            timeMove=20;
             randomDirection();
         }
+        move(0.0050);
         animate();
-        move();
+
     }
     public void render(GraphicsContext gc){
         if(alive){
@@ -61,5 +67,4 @@ public abstract class Enemy extends Entity {
         }
         super.render(gc);
     }
-
 }

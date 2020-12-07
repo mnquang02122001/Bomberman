@@ -6,7 +6,11 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.render.IRender;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class Entity implements IRender {
+
     protected final int MAX_ANIMATE = 6300;
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected double x;
@@ -21,10 +25,14 @@ public abstract class Entity implements IRender {
     protected Image img;
     public int value;
     public static int [][]check=new int[height][width];
+    public static Map<Integer, Entity> link=new HashMap<>();
     protected int animate = 0;
 
     public boolean isAlive() {
         return alive;
+    }
+    public boolean inDanger(){
+        return check[value/width][value%width]!=-1;
     }
 
     public void setAlive(boolean alive) {
@@ -113,6 +121,7 @@ public abstract class Entity implements IRender {
             this.yUnit = new Double(bombLocation(yUnit));
             updateLocationX();
             updateLocationY();
+            setAlive(true);
         }
 
     }
@@ -133,7 +142,7 @@ public abstract class Entity implements IRender {
         gc.drawImage(img, y, x);
     }
     public boolean checkRightIn(){
-        if((int)(xUnit*10)%10==0) return Entity.check[(int)(xUnit)][(int)(yUnit+0.75)]==0;
+        if(Math.round((int)xUnit*1000)/1000==xUnit) return Entity.check[(int)(xUnit)][(int)(yUnit+0.75)]==0;
         return Entity.check[(int)(xUnit)][(int)(yUnit+0.75)]==0 && Entity.check[(int)(xUnit+1)][(int)(yUnit+0.75)]==0;
     }
     /*public boolean checkRightOut(){
@@ -143,9 +152,9 @@ public abstract class Entity implements IRender {
     }
     */
 
-    public boolean checkLeftIn(){
-        if((int)(xUnit*10)%10==0) return Entity.check[(int)(xUnit)][(int)(yUnit-0.25)]==0;
-        return Entity.check[(int)(xUnit)][(int)(yUnit-0.25)]==0&&Entity.check[(int)(xUnit+1)][(int)(yUnit-0.25)]==0;
+    public boolean checkLeftIn(double a){
+        if(Math.round((int)xUnit*1000)/1000==xUnit) return Entity.check[(int)(xUnit)][(int)(yUnit-a)]==0;
+        return Entity.check[(int)(xUnit)][(int)(yUnit-a)]==0&&Entity.check[(int)(xUnit+1)][(int)(yUnit-a)]==0;
 
     }
     /*public boolean checkLeftOut(){
@@ -156,40 +165,40 @@ public abstract class Entity implements IRender {
     }
     */
 
-    public boolean checkUpIn(){
-        if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit-0.25)][(int)(yUnit)]==0;
-        return Entity.check[(int)(xUnit)][(int)(yUnit-0.25)]==0&&Entity.check[(int)(xUnit)][(int)(yUnit+0.5)]==0;
+    public boolean checkUpIn(double a){
+        if(Math.round((int)yUnit*1000)/1000<=yUnit&&Math.round((int)yUnit*1000)/1000+0.250>=yUnit) return Entity.check[(int)(xUnit-a)][(int)(yUnit)]==0;
+        return Entity.check[(int)(xUnit-a)][(int)(yUnit)]==0&&Entity.check[(int)(xUnit-a)][(int)(yUnit+0.5)]==0;
     }
     public boolean checkDownIn(){
-        if((int)(yUnit*10)%10==0||(int)((yUnit-0.25)*10)%10==0) return Entity.check[(int)(xUnit+1)][(int)(yUnit)]==0;
-        return Entity.check[(int)(xUnit+1)][(int)(yUnit)]==0&&Entity.check[(int)(xUnit+1)][(int)(yUnit+5)]==0;
+        if(Math.round((int)yUnit*1000)/1000<=yUnit&&Math.round((int)yUnit*1000)/1000+0.250>=yUnit) return Entity.check[(int)(xUnit+1)][(int)(yUnit)]==0;
+        return Entity.check[(int)(xUnit+1)][(int)(yUnit)]==0&&Entity.check[(int)(xUnit+1)][(int)(yUnit+0.5)]==0;
     }
-    public void move() {
-        if (isGoNorth()/*&&checkUpOut()*/&&checkUpIn()) {
+    public void move(double a) {
+        if (isGoNorth()/*&&checkUpOut()*/&&checkUpIn(a)) {
             setMoving(true);
-            xUnit-=0.25;
+            xUnit-=a;
             updateLocationX();
             return ;
         }
         if (isGoSouth()&&checkDownIn()/*&&checkDownOut()*/) {
             setMoving(true);
-            xUnit+=0.25;
+            xUnit+=a;
             updateLocationX();
             return ;
         }
-        if (isGoWest()&&checkLeftIn()/*&&checkLeftOut()*/) {
+        if (isGoWest()&&checkLeftIn(a)/*&&checkLeftOut()*/) {
             setMoving(true);
-            yUnit-=0.25;
+            yUnit-=a;
             updateLocationY();
             return ;
         }
         if (isGoEast()&&checkRightIn()/*&&checkRightOut()*/) {
             setMoving(true);
-            yUnit+=0.25;
+            yUnit+=a;
             updateLocationY();
             return ;
         }
-        setMoving(false);
+
     }
 
 
