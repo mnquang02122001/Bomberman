@@ -27,9 +27,9 @@ public class Bomb extends Entity {
                 img = Sprite.bomb_exploded2.getFxImage();
                 System.out.println(Entity.check[value/width][value%width]);
             } else {
-                //img=Sprite.grass.getFxImage();
                 Bomber.danger=false;
                 setAlive(false);
+                img=Sprite.grass.getFxImage();
             }
         }
         else{

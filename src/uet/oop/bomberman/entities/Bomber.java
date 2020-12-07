@@ -22,12 +22,8 @@ public class Bomber extends Entity {
     public void clearBomb(){
         bombList.clear();
     }
-    /*public List<Bomb> getBombList() {
-        //return bombList;
-    }
-
-    */
     public void placeBomb(double x, double y){
+        if(bombList.isEmpty())
         bombList.add(new Bomb(x, y, Sprite.bomb.getFxImage(), true));
     }
 
@@ -75,10 +71,6 @@ public class Bomber extends Entity {
         }
         super.render(gc);
     }
-
-
-
-
     @Override
     public void update() {
         move(0.125);

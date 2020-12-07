@@ -14,38 +14,34 @@ public abstract class Enemy extends Entity {
     protected AI ai;
     public Enemy(double xUnit, double yUnit, Image img){
         super(xUnit, yUnit, img);
+        ai = new AI();
         alive = true;
     }
     public void randomDirection(){
-        Random rd=new Random();
-        int rand= rd.nextInt()%4;
+        int rand= ai.calculateDir();
         if(rand==0) {
             setGoEast(true);
             setGoNorth(false);
             setGoSouth(false);
             setGoWest(false);
-            return ;
         }
         if(rand==1) {
             setGoEast(false);
             setGoNorth(true);
             setGoSouth(false);
             setGoWest(false);
-            return ;
         }
-        if(rand==2) {
+        else if(rand==2) {
             setGoEast(false);
             setGoNorth(false);
             setGoSouth(true);
             setGoWest(false);
-            return ;
         }
-        if(rand==3) {
+        else if(rand==3) {
             setGoEast(false);
             setGoNorth(false);
             setGoSouth(false);
             setGoWest(true);
-            return ;
         }
     }
     public void update(){
@@ -71,6 +67,4 @@ public abstract class Enemy extends Entity {
         }
         super.render(gc);
     }
-
-
 }
