@@ -9,22 +9,31 @@ import java.util.List;
 
 
 public class Bomber extends Entity {
+    public static boolean danger = false;
     private List<Bomb> bombList = new ArrayList<>();
     private int life;
-    public static boolean danger=false;
+    private int latency = 2;
+
     public Bomber(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
-        life=3;
+        life = 3;
     }
-    public void addBomb(Bomb bomb){
+
+    public List<Bomb> getBombList() {
+        return bombList;
+    }
+
+    public void addBomb(Bomb bomb) {
         bombList.add(bomb);
     }
-    public void clearBomb(){
+
+    public void clearBomb() {
         bombList.clear();
     }
-    public void placeBomb(double x, double y){
-        if(bombList.isEmpty())
-        bombList.add(new Bomb(x, y, Sprite.bomb.getFxImage(), true));
+
+    public void placeBomb(double x, double y) {
+        if (bombList.isEmpty())
+            bombList.add(new Bomb(x, y, Sprite.bomb.getFxImage(), true));
     }
 
     @Override
@@ -34,28 +43,28 @@ public class Bomber extends Entity {
             if (moving) {
                 img = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 10).getFxImage();
             }
-            return ;
+            return;
         }
         if (goSouth) {
             img = Sprite.player_down.getFxImage();
             if (moving) {
                 img = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 10).getFxImage();
             }
-            return ;
+            return;
         }
         if (goWest) {
             img = Sprite.player_left.getFxImage();
             if (moving) {
                 img = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 10).getFxImage();
             }
-            return ;
+            return;
         }
         if (goEast) {
             img = Sprite.player_right.getFxImage();
             if (moving) {
                 img = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 10).getFxImage();
             }
-            return ;
+            return;
         }
 
         img = Sprite.player_down.getFxImage();
@@ -63,18 +72,24 @@ public class Bomber extends Entity {
     }
 
     public void render(GraphicsContext gc) {
-        if(alive){
+        if (alive) {
             chooseImg();
-        }
-        else{
+        } else {
             img = Sprite.player_dead1.getFxImage();
         }
         super.render(gc);
     }
+
     @Override
     public void update() {
-        move(0.125);
-        animate();
+        if(latency > 0){
+            latency--;
+        }
+        else{
+            latency = 1;
+            move(0.125);
+            animate();
+        }
     }
 
 }

@@ -11,32 +11,55 @@ import java.util.Map;
 
 public abstract class Entity implements IRender {
 
+    public static int width = BombermanGame.WIDTH;
+    public static int height = BombermanGame.HEIGHT;
+    public static int[][] check = new int[height][width];
+    public static Map<Integer, Entity> link = new HashMap<>();
     protected final int MAX_ANIMATE = 6300;
-    //Tọa độ X tính từ góc trái trên trong Canvas
-    protected double x;
-    public static int width= BombermanGame.WIDTH;
-    public static int height= BombermanGame.HEIGHT;
-    //Tọa độ Y tính từ góc trái trên trong Canvas
-    protected double y;
     public double xUnit;
     public double yUnit;
+    public int value;
+    //Tọa độ X tính từ góc trái trên trong Canvas
+    protected double x;
+    //Tọa độ Y tính từ góc trái trên trong Canvas
+    protected double y;
     protected boolean alive = true;
     protected boolean goNorth, goSouth, goEast, goWest, moving;
     protected Image img;
-    public int value;
-    public static int [][]check=new int[height][width];
-    public static Map<Integer, Entity> link=new HashMap<>();
     protected int animate = 0;
+
+    //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
+    public Entity(double xUnit, double yUnit, Image img) {
+        this.x = xUnit * Sprite.SCALED_SIZE;
+        this.y = yUnit * Sprite.SCALED_SIZE;
+        this.xUnit = xUnit;
+        this.yUnit = yUnit;
+        this.img = img;
+        this.value = (int) xUnit * width + (int) yUnit;
+        setAlive(true);
+    }
+
+    public Entity(double xUnit, double yUnit, Image img, boolean bomb) {
+        if (bomb == true) {
+            this.xUnit = new Double(bombLocation(xUnit));
+            this.yUnit = new Double(bombLocation(yUnit));
+            updateLocationX();
+            updateLocationY();
+            setAlive(true);
+        }
+
+    }
 
     public boolean isAlive() {
         return alive;
     }
-    public boolean inDanger(){
-        return check[value/width][value%width]!=-1;
-    }
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public boolean inDanger() {
+        return check[value / width][value % width] != -1;
     }
 
     public double getX() {
@@ -95,39 +118,21 @@ public abstract class Entity implements IRender {
         this.moving = moving;
     }
 
-    //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
-    public Entity(double xUnit, double yUnit, Image img) {
-        this.x = xUnit * Sprite.SCALED_SIZE;
-        this.y = yUnit * Sprite.SCALED_SIZE;
-        this.xUnit=xUnit;
-        this.yUnit=yUnit;
-        this.img = img;
-        this.value=(int)xUnit*width+(int)yUnit;
-        setAlive(true);
-    }
-    public void updateLocationX(){
+    public void updateLocationX() {
         this.x = xUnit * Sprite.SCALED_SIZE;
         //this.y = yUnit * Sprite.SCALED_SIZE;
-        this.value=(int)xUnit*width+(int)yUnit;
+        this.value = (int) xUnit * width + (int) yUnit;
     }
-    public void updateLocationY(){
-        this.y = yUnit * Sprite.SCALED_SIZE;
-        //this.y = yUnit * Sprite.SCALED_SIZE;
-        this.value=(int)xUnit*width+(int)yUnit;
-    }
-    public Entity(double xUnit, double yUnit, Image img, boolean bomb) {
-        if(bomb==true) {
-            this.xUnit = new Double(bombLocation(xUnit));
-            this.yUnit = new Double(bombLocation(yUnit));
-            updateLocationX();
-            updateLocationY();
-            setAlive(true);
-        }
 
+    public void updateLocationY() {
+        this.y = yUnit * Sprite.SCALED_SIZE;
+        //this.y = yUnit * Sprite.SCALED_SIZE;
+        this.value = (int) xUnit * width + (int) yUnit;
     }
-    public double bombLocation(double x){
-        if(x-(int)x>=0.5) return (int)x+1;
-        return (int)x;
+
+    public double bombLocation(double x) {
+        if (x - (int) x >= 0.5) return (int) x + 1;
+        return (int) x;
     }
 
     protected void animate() {
@@ -141,9 +146,11 @@ public abstract class Entity implements IRender {
     public void render(GraphicsContext gc) {
         gc.drawImage(img, y, x);
     }
-    public boolean checkRightIn(){
-        if(Math.round((int)xUnit*1000)/1000==xUnit) return Entity.check[(int)(xUnit)][(int)(yUnit+0.75)]==0;
-        return Entity.check[(int)(xUnit)][(int)(yUnit+0.75)]==0 && Entity.check[(int)(xUnit+1)][(int)(yUnit+0.75)]==0;
+
+    public boolean checkRightIn() {
+        if (Math.round((int) xUnit * 1000) / 1000 == xUnit)
+            return Entity.check[(int) (xUnit)][(int) (yUnit + 0.75)] == 0;
+        return Entity.check[(int) (xUnit)][(int) (yUnit + 0.75)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit + 0.75)] == 0;
     }
     /*public boolean checkRightOut(){
 
@@ -152,9 +159,9 @@ public abstract class Entity implements IRender {
     }
     */
 
-    public boolean checkLeftIn(double a){
-        if(Math.round((int)xUnit*1000)/1000==xUnit) return Entity.check[(int)(xUnit)][(int)(yUnit-a)]==0;
-        return Entity.check[(int)(xUnit)][(int)(yUnit-a)]==0&&Entity.check[(int)(xUnit+1)][(int)(yUnit-a)]==0;
+    public boolean checkLeftIn(double a) {
+        if (Math.round((int) xUnit * 1000) / 1000 == xUnit) return Entity.check[(int) (xUnit)][(int) (yUnit - a)] == 0;
+        return Entity.check[(int) (xUnit)][(int) (yUnit - a)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit - a)] == 0;
 
     }
     /*public boolean checkLeftOut(){
@@ -165,44 +172,46 @@ public abstract class Entity implements IRender {
     }
     */
 
-    public boolean checkUpIn(double a){
-        if(Math.round((int)yUnit*1000)/1000<=yUnit&&Math.round((int)yUnit*1000)/1000+0.250>=yUnit) return Entity.check[(int)(xUnit-a)][(int)(yUnit)]==0;
-        return Entity.check[(int)(xUnit-a)][(int)(yUnit)]==0&&Entity.check[(int)(xUnit-a)][(int)(yUnit+0.5)]==0;
+    public boolean checkUpIn(double a) {
+        if (Math.round((int) yUnit * 1000) / 1000 <= yUnit && Math.round((int) yUnit * 1000) / 1000 + 0.250 >= yUnit)
+            return Entity.check[(int) (xUnit - a)][(int) (yUnit)] == 0;
+        return Entity.check[(int) (xUnit - a)][(int) (yUnit)] == 0 && Entity.check[(int) (xUnit - a)][(int) (yUnit + 0.5)] == 0;
     }
-    public boolean checkDownIn(){
-        if(Math.round((int)yUnit*1000)/1000<=yUnit&&Math.round((int)yUnit*1000)/1000+0.250>=yUnit) return Entity.check[(int)(xUnit+1)][(int)(yUnit)]==0;
-        return Entity.check[(int)(xUnit+1)][(int)(yUnit)]==0&&Entity.check[(int)(xUnit+1)][(int)(yUnit+0.5)]==0;
+
+    public boolean checkDownIn() {
+        if (Math.round((int) yUnit * 1000) / 1000 <= yUnit && Math.round((int) yUnit * 1000) / 1000 + 0.250 >= yUnit)
+            return Entity.check[(int) (xUnit + 1)][(int) (yUnit)] == 0;
+        return Entity.check[(int) (xUnit + 1)][(int) (yUnit)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit + 0.5)] == 0;
     }
+
     public void move(double a) {
-        if (isGoNorth()/*&&checkUpOut()*/&&checkUpIn(a)) {
+        if (isGoNorth()&& checkUpIn(a)) {
             setMoving(true);
-            xUnit-=a;
+            xUnit -= a;
             updateLocationX();
-            return ;
         }
-        if (isGoSouth()&&checkDownIn()/*&&checkDownOut()*/) {
+        else if (isGoSouth() && checkDownIn()) {
             setMoving(true);
-            xUnit+=a;
+            xUnit += a;
             updateLocationX();
-            return ;
         }
-        if (isGoWest()&&checkLeftIn(a)/*&&checkLeftOut()*/) {
+        else if (isGoWest() && checkLeftIn(a)) {
             setMoving(true);
-            yUnit-=a;
+            yUnit -= a;
             updateLocationY();
-            return ;
         }
-        if (isGoEast()&&checkRightIn()/*&&checkRightOut()*/) {
+        else if (isGoEast() && checkRightIn()) {
             setMoving(true);
-            yUnit+=a;
+            yUnit += a;
             updateLocationY();
-            return ;
         }
 
     }
 
 
-    public void chooseImg(){}
+    public void chooseImg() {
+    }
+
     public abstract void update();
 
 }
