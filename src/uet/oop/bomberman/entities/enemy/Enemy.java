@@ -4,65 +4,62 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.AI.AI;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.graphics.Sprite;
-
-import java.util.Random;
 
 public abstract class Enemy extends Entity {
     //private static int timeWaiting=10;
-    private static int timeMove=20;
+    private static int timeMove = 20;
     protected AI ai;
-    public Enemy(double xUnit, double yUnit, Image img){
+
+    public Enemy(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
         ai = new AI();
         alive = true;
     }
-    public void randomDirection(){
-        int rand= ai.calculateDir();
-        if(rand==0) {
+
+    public void randomDirection() {
+        int rand = ai.calculateDir();
+        if (rand == 0) {
             setGoEast(true);
             setGoNorth(false);
             setGoSouth(false);
             setGoWest(false);
         }
-        if(rand==1) {
+        if (rand == 1) {
             setGoEast(false);
             setGoNorth(true);
             setGoSouth(false);
             setGoWest(false);
-        }
-        else if(rand==2) {
+        } else if (rand == 2) {
             setGoEast(false);
             setGoNorth(false);
             setGoSouth(true);
             setGoWest(false);
-        }
-        else if(rand==3) {
+        } else if (rand == 3) {
             setGoEast(false);
             setGoNorth(false);
             setGoSouth(false);
             setGoWest(true);
         }
     }
-    public void update(){
+
+    public void update() {
 
 
-
-        if(timeMove>0){
+        if (timeMove > 0) {
             timeMove--;
 
 
-        }
-        else{
-            timeMove=20;
+        } else {
+            timeMove = 20;
             randomDirection();
         }
         move(0.0050);
         animate();
 
     }
-    public void render(GraphicsContext gc){
-        if(alive){
+
+    public void render(GraphicsContext gc) {
+        if (alive) {
             chooseImg();
         }
         super.render(gc);

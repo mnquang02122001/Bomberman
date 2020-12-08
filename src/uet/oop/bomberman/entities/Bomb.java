@@ -13,7 +13,6 @@ public class Bomb extends Entity {
     private int explodeTime = 100;
     public int explodeExistTime = 20;
     private boolean isExplode = false;
-    int time=0;
     public Bomb(double xUnit, double yUnit, Image img, boolean bomb){
         super(xUnit, yUnit, img, bomb);
     }

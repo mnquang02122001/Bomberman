@@ -1,9 +1,9 @@
 package uet.oop.bomberman.controller;
 
 import javafx.scene.Scene;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Bomb;
+import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Controller {
