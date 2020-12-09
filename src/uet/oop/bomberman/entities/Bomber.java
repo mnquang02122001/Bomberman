@@ -12,7 +12,6 @@ public class Bomber extends Entity {
     public static boolean danger = false;
     private List<Bomb> bombList = new ArrayList<>();
     private int life;
-    private int latency = 2;
 
     public Bomber(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -82,14 +81,8 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
-        if(latency > 0){
-            latency--;
-        }
-        else{
-            latency = 1;
-            move(0.125);
-            animate();
-        }
+        move(0.125);
+        animate();
     }
 
 }

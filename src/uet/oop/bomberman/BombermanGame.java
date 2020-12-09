@@ -12,6 +12,7 @@ import uet.oop.bomberman.controller.Controller;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.enemy.*;
+import uet.oop.bomberman.entities.powers.PowerUpBombs;
 import uet.oop.bomberman.entities.tiles.Brick;
 import uet.oop.bomberman.entities.tiles.Grass;
 import uet.oop.bomberman.entities.tiles.Wall;
@@ -54,11 +55,8 @@ public class BombermanGame extends Application {
         createMap(MAP_LV1);
         Bomber bomberman = new Bomber(1.000, 1.000, Sprite.player_left.getFxImage());
         entities.add(bomberman);
-        entities.add(new Balloon(3, 3, Sprite.balloom_left1.getFxImage()));
-        entities.add(new Doll(1,1, Sprite.doll_left1.getFxImage()));
-        entities.add(new Kondoria(5, 5, Sprite.kondoria_left1.getFxImage()));
-        entities.add(new Minvo(7, 7, Sprite.minvo_left1.getFxImage()));
-        entities.add(new Oneal(8, 8, Sprite.oneal_left1.getFxImage()));
+        createMonster();
+        createItem();
         Music.play(THEME_MUSIC_PATH);
         // Them scene vao stage
         stage.setScene(scene);
@@ -78,7 +76,16 @@ public class BombermanGame extends Application {
 
 
     }
-
+    public void createMonster(){
+        entities.add(new Balloon(3, 3, Sprite.balloom_left1.getFxImage()));
+        entities.add(new Doll(1,1, Sprite.doll_left1.getFxImage()));
+        entities.add(new Kondoria(5, 5, Sprite.kondoria_left1.getFxImage()));
+        entities.add(new Minvo(7, 7, Sprite.minvo_left1.getFxImage()));
+        entities.add(new Oneal(8, 8, Sprite.oneal_left1.getFxImage()));
+    }
+    public void createItem(){
+        entities.add(new PowerUpBombs(1, 2, Sprite.powerup_bombs.getFxImage()));
+    }
     public void createMap(String path) throws FileNotFoundException {
         Scanner sc = new Scanner(new FileReader(path));
         for (int i = 0; i < HEIGHT; i++) {
