@@ -9,10 +9,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.Music.Music;
 import uet.oop.bomberman.controller.Controller;
+import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.enemy.*;
 import uet.oop.bomberman.entities.powers.PowerUpBombs;
+import uet.oop.bomberman.entities.powers.PowerUpFlames;
+import uet.oop.bomberman.entities.powers.PowerUpSpeed;
 import uet.oop.bomberman.entities.tiles.Brick;
 import uet.oop.bomberman.entities.tiles.Grass;
 import uet.oop.bomberman.entities.tiles.Wall;
@@ -22,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class BombermanGame extends Application {
@@ -31,7 +35,10 @@ public class BombermanGame extends Application {
     public static final String MAP_LV1 = "res/levels/Level2.txt";
     public static final String THEME_MUSIC_PATH = "res/music/theme.mp3";
     public static List<Entity> entities = new ArrayList<>();
-    private static List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> listMonster=new ArrayList<>();
+    public static List<Entity> listItem=new ArrayList<>();
+    private Bomber bomberman;
     private static boolean isFirst = true;
     private GraphicsContext gc;
     private Canvas canvas;
@@ -53,7 +60,7 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
         createMap(MAP_LV1);
-        Bomber bomberman = new Bomber(1.000, 1.000, Sprite.player_left.getFxImage());
+        bomberman = new Bomber(1.000, 1.000, Sprite.player_left.getFxImage());
         entities.add(bomberman);
         createMonster();
         createItem();
@@ -77,14 +84,27 @@ public class BombermanGame extends Application {
 
     }
     public void createMonster(){
-        entities.add(new Balloon(3, 3, Sprite.balloom_left1.getFxImage()));
-        entities.add(new Doll(1,1, Sprite.doll_left1.getFxImage()));
-        entities.add(new Kondoria(5, 5, Sprite.kondoria_left1.getFxImage()));
-        entities.add(new Minvo(7, 7, Sprite.minvo_left1.getFxImage()));
-        entities.add(new Oneal(8, 8, Sprite.oneal_left1.getFxImage()));
+        Entity first = new Balloon(3, 3, Sprite.balloom_left1.getFxImage());
+        Entity second = new Doll(1,1, Sprite.doll_left1.getFxImage());
+        Entity third = new Kondoria(5, 5, Sprite.kondoria_left1.getFxImage());
+        Entity fourth = new Minvo(7, 7, Sprite.minvo_left1.getFxImage());
+        Entity fifth = new Oneal(8, 8, Sprite.oneal_left1.getFxImage());
+        entities.add(first);
+        entities.add(second);
+        entities.add(third);
+        entities.add(fourth);
+        entities.add(fifth);
+
+        listMonster.add(first);
+        listMonster.add(second);
+        listMonster.add(third);
+        listMonster.add(fourth);
+        listMonster.add(fifth);
     }
     public void createItem(){
-        entities.add(new PowerUpBombs(1, 2, Sprite.powerup_bombs.getFxImage()));
+        Entity Item=new PowerUpBombs(1.000, 2.000, Sprite.powerup_bombs.getFxImage());
+        listItem.add(Item);
+        entities.add(Item);
     }
     public void createMap(String path) throws FileNotFoundException {
         Scanner sc = new Scanner(new FileReader(path));
@@ -112,10 +132,43 @@ public class BombermanGame extends Application {
 
     public void update() {
 
-        for (Entity entity : entities) {
-            if (!entity.isAlive()) entities.remove(entity);
-            else entity.update();
+        for(int i=0; i<entities.size(); i++) {
+            if (!entities.get(i).isAlive()) {
+                if(entities.get(i) instanceof Bomb) {
+                    bomberman.bombCount++;
+                    entities.remove(entities.get(i));
+                }
+                else if(entities.get(i) instanceof Brick && ((Brick) entities.get(i)).changement==false) {
+                    Random rd = new Random();
+                    int random = rd.nextInt() % 3;
+                    Entity item;
+                    switch (random) {
+                        case 0:
+                            item=new PowerUpBombs(entities.get(i).xUnit, entities.get(i).yUnit, Sprite.powerup_bombs.getFxImage());
+                            break;
+                        case 1:
+                            item=new PowerUpFlames(entities.get(i).xUnit, entities.get(i).yUnit, Sprite.powerup_flamepass.getFxImage());
+                            break;
+                        default:
+                            item=new PowerUpSpeed(entities.get(i).xUnit, entities.get(i).yUnit, Sprite.powerup_speed.getFxImage());
+                            break;
+
+
+                    }
+                    listItem.add(item);
+                    entities.remove(i);
+                    entities.add(0, item);
+
+
+                }
+                else entities.remove(entities.get(i));
+
+            }
+            else entities.get(i).update();
         }
+        listMonster.removeIf(monster -> !monster.isAlive());
+
+        listItem.removeIf(item -> !item.isAlive());
 
     }
 

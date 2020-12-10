@@ -21,7 +21,7 @@ public class Bomb extends Entity {
     public void render(GraphicsContext gc){
         if(isExplode) {
             if (explodeExistTime>0) {
-                Bomber.danger=true;
+                Entity.danger=true;
                 explodeExistTime--;
                 img = Sprite.bomb_exploded2.getFxImage();
                 System.out.println(Entity.check[value/width][value%width]);
@@ -84,6 +84,7 @@ public class Bomb extends Entity {
                         BombermanGame.entities.add(0, link.get(x * width + y2));
                     }
                 }
+                Entity.check[x][y]=-1;
             }
             else{
                 System.out.println("hello");
@@ -91,6 +92,8 @@ public class Bomb extends Entity {
                 if (Entity.check[x2][y] <= 1) Entity.check[x2][y] = 0;
                 if (Entity.check[x][y1] <= 1) Entity.check[x][y1] = 0;
                 if (Entity.check[x][y2] <= 1) Entity.check[x][y2] = 0;
+                Entity.check[x][y] = 0;
+
 
             }
 

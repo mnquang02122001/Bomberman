@@ -14,6 +14,8 @@ public abstract class Enemy extends Entity {
         super(xUnit, yUnit, img);
         ai = new AI();
         alive = true;
+        life=1;
+
     }
 
     public void randomDirection() {
@@ -44,7 +46,10 @@ public abstract class Enemy extends Entity {
 
     public void update() {
 
-
+        Wait();
+        if(danger){
+            if(!checkDanger()) die();
+        }
         if (timeMove > 0) {
             timeMove--;
 
@@ -53,7 +58,7 @@ public abstract class Enemy extends Entity {
             timeMove = 20;
             randomDirection();
         }
-        move(0.0050);
+        move(0.050);
         animate();
 
     }

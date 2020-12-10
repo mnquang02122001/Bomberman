@@ -16,6 +16,7 @@ public abstract class Entity implements IRender {
     public static int[][] check = new int[height][width];
     public static Map<Integer, Entity> link = new HashMap<>();
     protected final int MAX_ANIMATE = 6300;
+    public static boolean danger = false;
     public double xUnit;
     public double yUnit;
     public int value;
@@ -27,6 +28,9 @@ public abstract class Entity implements IRender {
     protected boolean goNorth, goSouth, goEast, goWest, moving;
     protected Image img;
     protected int animate = 0;
+    protected int countToDie;
+    protected boolean waitToDie;
+    protected int life;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity(double xUnit, double yUnit, Image img) {
@@ -206,6 +210,20 @@ public abstract class Entity implements IRender {
             updateLocationY();
         }
 
+    }
+    public boolean checkDanger(){
+        if(Math.round((int) yUnit * 1000) / 1000 + 0.250 < yUnit)
+            return check[(int)xUnit][(int)yUnit]==0&&check[(int)xUnit][(int)(yUnit+1)]==0;
+        if(Math.round((int)xUnit*1000)/1000!=xUnit)
+            return check[(int)xUnit][(int)yUnit]==0&&check[(int)xUnit+1][(int)(yUnit)]==0;
+        return check[(int)xUnit][(int)yUnit]==0;
+    }
+    public void Wait(){
+        if(countToDie>0) countToDie--;
+        else waitToDie=false;
+    }
+    public void die(){
+        setAlive(false);
     }
 
 
