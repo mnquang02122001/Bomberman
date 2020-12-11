@@ -24,7 +24,7 @@ public class Bomb extends Entity {
                 Entity.danger=true;
                 explodeExistTime--;
                 img = Sprite.bomb_exploded2.getFxImage();
-                System.out.println(Entity.check[value/width][value%width]);
+                //System.out.println(Entity.check[value/width][value%width]);
             } else {
                 Bomber.danger=false;
                 setAlive(false);
@@ -45,7 +45,6 @@ public class Bomb extends Entity {
         int y1 = (int) yUnit + 1;
         int y2 = (int) yUnit - 1;
         if(explodeTime > 0){
-            isExplode = false;
             explodeTime--;
         }
         else{

@@ -164,7 +164,7 @@ public abstract class Entity implements IRender {
     */
 
     public boolean checkLeftIn(double a) {
-        if (Math.round((int) xUnit * 1000) / 1000 == xUnit) return Entity.check[(int) (xUnit)][(int) (yUnit - a)] == 0;
+        if (Math.round((int) xUnit * 1000) / 1000 == xUnit) return Entity.check[(int) (xUnit)][(int) (yUnit - 0.25)] == 0;
         return Entity.check[(int) (xUnit)][(int) (yUnit - a)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit - a)] == 0;
 
     }
@@ -188,35 +188,47 @@ public abstract class Entity implements IRender {
         return Entity.check[(int) (xUnit + 1)][(int) (yUnit)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit + 0.5)] == 0;
     }
 
-    public void move(double a) {
-        if (isGoNorth()&& checkUpIn(a)) {
+    public void move(double speedMax) {
+        double speedUp;
+        if(xUnit==Math.round((int)xUnit*1000)/1000) speedUp=speedMax;
+        else speedUp=Math.min(speedMax, xUnit-Math.round((int)xUnit*1000)/1000);
+        double speedDown;
+        if(xUnit== Math.round((int)xUnit*1000)/1000) speedDown=speedMax;
+        else speedDown=Math.min(speedMax, 1.000-xUnit+Math.round((int)xUnit*1000)/1000);
+        double speedLeft;
+        if(yUnit==Math.round((int)yUnit*1000)/1000) speedLeft=speedMax;
+        else speedLeft=Math.min(speedMax, yUnit-Math.round((int)yUnit*1000)/1000);
+        double speedRight;
+        if(yUnit==Math.round((int)yUnit*1000)/1000+0.250) speedRight=speedMax;
+        else speedRight=Math.min(speedMax, 1.250-yUnit+Math.round((int)(yUnit-0.250)*1000)/1000);
+        if (isGoNorth()&& checkUpIn(speedUp)) {
             setMoving(true);
-            xUnit -= a;
+            xUnit -= speedUp;
             updateLocationX();
         }
         else if (isGoSouth() && checkDownIn()) {
             setMoving(true);
-            xUnit += a;
+            xUnit += speedDown;
             updateLocationX();
         }
-        else if (isGoWest() && checkLeftIn(a)) {
+        else if (isGoWest() && checkLeftIn(speedLeft)) {
             setMoving(true);
-            yUnit -= a;
+            yUnit -= speedLeft;
             updateLocationY();
         }
         else if (isGoEast() && checkRightIn()) {
             setMoving(true);
-            yUnit += a;
+            yUnit += speedRight;
             updateLocationY();
         }
 
     }
     public boolean checkDanger(){
         if(Math.round((int) yUnit * 1000) / 1000 + 0.250 < yUnit)
-            return check[(int)xUnit][(int)yUnit]==0&&check[(int)xUnit][(int)(yUnit+1)]==0;
+            return check[(int)xUnit][(int)yUnit]>-1&&check[(int)xUnit][(int)(yUnit+1)]>-1;
         if(Math.round((int)xUnit*1000)/1000!=xUnit)
-            return check[(int)xUnit][(int)yUnit]==0&&check[(int)xUnit+1][(int)(yUnit)]==0;
-        return check[(int)xUnit][(int)yUnit]==0;
+            return check[(int)xUnit][(int)yUnit]>-1&&check[(int)xUnit+1][(int)(yUnit)]>-1;
+        return check[(int)xUnit][(int)yUnit]>-1;
     }
     public void Wait(){
         if(countToDie>0) countToDie--;

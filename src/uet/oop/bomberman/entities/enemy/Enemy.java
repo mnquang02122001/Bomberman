@@ -46,7 +46,7 @@ public abstract class Enemy extends Entity {
 
     public void update() {
 
-        Wait();
+
         if(danger){
             if(!checkDanger()) die();
         }

@@ -16,7 +16,7 @@ public class Bomber extends Entity {
 
     private List<Bomb> bombList = new ArrayList<>();
     boolean maxSpeed;
-    public double speed;
+    public double speedMax;
     public int bombCount;
     public int flameCount;
     public Bomber(double xUnit, double yUnit, Image img) {
@@ -24,7 +24,7 @@ public class Bomber extends Entity {
         life = 3;
         waitToDie=true;
         countToDie=200;
-        speed=0.125;
+        speedMax=0.125;
         bombCount=1;
         flameCount=1;
         maxSpeed=false;
@@ -94,7 +94,9 @@ public class Bomber extends Entity {
         for(int i=0; i< BombermanGame.listMonster.size(); i++){
             double X = xUnit-BombermanGame.listMonster.get(i).xUnit;
             double Y = yUnit-BombermanGame.listMonster.get(i).yUnit;
-            if(X*X+Y*Y<=0.500*0.500) return true;
+            if(X*X+Y*Y<=0.500*0.500){
+                return true;
+            }
         }
         return false;
     }
@@ -110,7 +112,7 @@ public class Bomber extends Entity {
                 else if(BombermanGame.listItem.get(i) instanceof PowerUpFlames)
                     flameCount++;
                 else if(BombermanGame.listItem.get(i) instanceof PowerUpSpeed&&!maxSpeed) {
-                    speed += 0.125;
+                    speedMax += 0.05;
                     maxSpeed = false;
                 }
                 BombermanGame.listItem.get(i).setAlive(false);
@@ -150,7 +152,7 @@ public class Bomber extends Entity {
         }
         if(checkMeetEnemy()) die();
         meetItem();
-        move(speed);
+        move(speedMax);
         animate();
     }
 
