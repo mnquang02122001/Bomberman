@@ -17,6 +17,7 @@ import uet.oop.bomberman.entities.powers.PowerUpBombs;
 import uet.oop.bomberman.entities.powers.PowerUpFlames;
 import uet.oop.bomberman.entities.powers.PowerUpSpeed;
 import uet.oop.bomberman.entities.tiles.Brick;
+import uet.oop.bomberman.entities.tiles.Gate;
 import uet.oop.bomberman.entities.tiles.Grass;
 import uet.oop.bomberman.entities.tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
+import static uet.oop.bomberman.entities.Bomber.changeScreen;
 
 public class BombermanGame extends Application {
 
@@ -39,6 +42,7 @@ public class BombermanGame extends Application {
     public static List<Entity> listMonster=new ArrayList<>();
     public static List<Entity> listItem=new ArrayList<>();
     private Bomber bomberman;
+    private int countGate=1;
     private static boolean isFirst = true;
     private GraphicsContext gc;
     private Canvas canvas;
@@ -131,14 +135,21 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
-
+        if(listMonster.isEmpty()){
+            if(countGate>0) {
+                Entity gate = new Gate();
+                listMonster.add(gate);
+                entities.add(gate);
+                countGate--;
+            }
+        }
         for(int i=0; i<entities.size(); i++) {
             if (!entities.get(i).isAlive()) {
                 if(entities.get(i) instanceof Bomb) {
                     bomberman.bombCount++;
                     entities.remove(entities.get(i));
                 }
-                else if(entities.get(i) instanceof Brick && ((Brick) entities.get(i)).changement==false) {
+                else if(entities.get(i) instanceof Brick && ((Brick) entities.get(i)).changement==true) {
                     Random rd = new Random();
                     int random = rd.nextInt() % 3;
                     Entity item;
@@ -179,6 +190,8 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        if(changeScreen==true)
+            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
 

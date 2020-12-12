@@ -196,37 +196,47 @@ public abstract class Entity implements IRender {
     }
 
     public void move(double speedMax) {
-        double speedUp;
-        if((double)Math.round(xUnit*1000)/1000==(double)Math.round((int)xUnit*1000)/1000) speedUp=speedMax;
-        else speedUp=Math.min(speedMax, xUnit-(double)Math.round((int)xUnit*1000)/1000);
-        double speedDown;
-        if((double)Math.round(xUnit*1000)/1000== (double)Math.round((int)xUnit*1000)/1000) speedDown=speedMax;
-        else speedDown=Math.min(speedMax, 1.000-xUnit+(double)Math.round((int)xUnit*1000)/1000);
-        double speedLeft;
-        if((double)Math.round(yUnit*1000)/1000==(double)Math.round((int)yUnit*1000)/1000) speedLeft=speedMax;
-        else speedLeft=Math.min(speedMax, yUnit-(double)Math.round((int)yUnit*1000)/1000);
-        double speedRight;
-        if((double)Math.round(yUnit*1000)/1000==(double)Math.round((int)yUnit*1000)/1000+0.250) speedRight=speedMax;
-        else speedRight=Math.min(speedMax, !(0.250 - Math.round(yUnit*1000)/1000 + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000 <= 0) ? 0.250 - Math.round(yUnit*1000)/1000 + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000 : 1.25 - yUnit + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000);
-        if (isGoNorth()&& checkUpIn(speedUp)) {
-            setMoving(true);
-            xUnit -= speedUp;
-            updateLocationX();
+        if (isGoNorth()){
+            double speedUp;
+            if((double)Math.round(xUnit*1000)/1000==(double)Math.round((int)xUnit*1000)/1000) speedUp=speedMax;
+            else speedUp=Math.min(speedMax, xUnit-(double)Math.round((int)xUnit*1000)/1000);
+            if(checkUpIn(speedUp)) {
+                setMoving(true);
+                xUnit -= speedUp;
+                updateLocationX();
+            }
         }
-        else if (isGoSouth() && checkDownIn()) {
-            setMoving(true);
-            xUnit += speedDown;
-            updateLocationX();
+        else if (isGoSouth()) {
+            double speedDown;
+            if((double)Math.round(xUnit*1000)/1000== (double)Math.round((int)xUnit*1000)/1000) speedDown=speedMax;
+            else speedDown=Math.min(speedMax, 1.000-xUnit+(double)Math.round((int)xUnit*1000)/1000);
+            if(checkDownIn()) {
+                setMoving(true);
+                xUnit += speedDown;
+                updateLocationX();
+            }
         }
-        else if (isGoWest() && checkLeftIn(speedLeft)) {
-            setMoving(true);
-            yUnit -= speedLeft;
-            updateLocationY();
+        else if (isGoWest()) {
+            double speedLeft;
+            if ((double) Math.round(yUnit * 1000) / 1000 == (double) Math.round((int) yUnit * 1000) / 1000)
+                speedLeft = speedMax;
+            else speedLeft = Math.min(speedMax, yUnit - (double) Math.round((int) yUnit * 1000) / 1000);
+
+            if (checkLeftIn(speedLeft)) {
+                setMoving(true);
+                yUnit -= speedLeft;
+                updateLocationY();
+            }
         }
-        else if (isGoEast() && checkRightIn()) {
-            setMoving(true);
-            yUnit += speedRight;
-            updateLocationY();
+        else if (isGoEast()){
+            double speedRight;
+            if((double)Math.round(yUnit*1000)/1000==(double)Math.round((int)yUnit*1000)/1000+0.250) speedRight=speedMax;
+            else speedRight=Math.min(speedMax, !(0.250 - Math.round(yUnit*1000)/1000 + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000 <= 0) ? 0.250 - Math.round(yUnit*1000)/1000 + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000 : 1.25 - yUnit + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000);
+            if(checkRightIn()) {
+                setMoving(true);
+                yUnit += speedRight;
+                updateLocationY();
+            }
         }
 
     }

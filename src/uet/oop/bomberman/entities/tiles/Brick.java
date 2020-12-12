@@ -15,10 +15,12 @@ public class Brick extends Entity {
     public Brick(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         changement=false;
-        random=rd.nextInt()%20;
+        random=rd.nextInt()%3;
+        countPresent=1;
     }
     private int random;
     public boolean changement;
+    private int countPresent;
     Random rd=new Random();
     public void update() {
 
@@ -30,7 +32,13 @@ public class Brick extends Entity {
             if(check[value/width][value%width]==1)
                 img = Sprite.brick.getFxImage();
             else {
-                if(random==0) changement=false;
+                if(random==0){
+                    if(countPresent>0){
+                        changement=true;
+                        countPresent--;
+                    }
+                    else changement=false;
+                }
                 img=Sprite.grass.getFxImage();
             }
             setAlive(false);

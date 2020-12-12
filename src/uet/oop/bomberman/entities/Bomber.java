@@ -6,6 +6,7 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.powers.PowerUpBombs;
 import uet.oop.bomberman.entities.powers.PowerUpFlames;
 import uet.oop.bomberman.entities.powers.PowerUpSpeed;
+import uet.oop.bomberman.entities.tiles.Gate;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Bomber extends Entity {
     public int bombCount;
     public int flameCount;
     public int moveWait=6;
+    public static boolean changeScreen=false;
     public Bomber(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
         life = 3;
@@ -96,6 +98,9 @@ public class Bomber extends Entity {
             double X = xUnit-BombermanGame.listMonster.get(i).xUnit;
             double Y = yUnit-BombermanGame.listMonster.get(i).yUnit;
             if(X*X+Y*Y<=0.500*0.500){
+                if(BombermanGame.listMonster.get(i) instanceof Gate){
+                    changeScreen=true;
+                }
                 return true;
             }
         }
@@ -154,7 +159,9 @@ public class Bomber extends Entity {
         if(danger){
            if(!checkDanger()) die();
         }
-        //if(checkMeetEnemy()) die();
+        if(checkMeetEnemy()){
+            die();
+        }
         meetItem();
         if(moveWait>0) moveWait--;
         else {
