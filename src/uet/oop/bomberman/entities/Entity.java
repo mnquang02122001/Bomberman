@@ -135,7 +135,7 @@ public abstract class Entity implements IRender {
     }
 
     public double bombLocation(double x) {
-        if (x - (int) x >= 0.5) return (int) x + 1;
+        if (x - (int) x >= 0.500) return (int) x + 1.000;
         return (int) x;
     }
 
@@ -152,9 +152,16 @@ public abstract class Entity implements IRender {
     }
 
     public boolean checkRightIn() {
-        if (Math.round((int) xUnit * 1000) / 1000 == xUnit)
-            return Entity.check[(int) (xUnit)][(int) (yUnit + 0.75)] == 0;
-        return Entity.check[(int) (xUnit)][(int) (yUnit + 0.75)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit + 0.75)] == 0;
+
+        if ((double)Math.round((int) (xUnit) * 1000) / 1000 == (double)Math.round(xUnit*1000)/1000) {
+            return Entity.check[(int) (xUnit)][(int) (yUnit + 0.750)] == 0;
+
+        }
+
+        return Entity.check[(int) (xUnit)][(int) (yUnit + 0.750)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit + 0.750)] == 0;
+
+
+
     }
     /*public boolean checkRightOut(){
 
@@ -164,7 +171,7 @@ public abstract class Entity implements IRender {
     */
 
     public boolean checkLeftIn(double a) {
-        if (Math.round((int) xUnit * 1000) / 1000 == xUnit) return Entity.check[(int) (xUnit)][(int) (yUnit - 0.25)] == 0;
+        if ((double)Math.round((int) xUnit * 1000) / 1000 == (double)Math.round(xUnit*1000)/1000) return Entity.check[(int) (xUnit)][(int) (yUnit - 0.25)] == 0;
         return Entity.check[(int) (xUnit)][(int) (yUnit - a)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit - a)] == 0;
 
     }
@@ -177,30 +184,30 @@ public abstract class Entity implements IRender {
     */
 
     public boolean checkUpIn(double a) {
-        if (Math.round((int) yUnit * 1000) / 1000 <= yUnit && Math.round((int) yUnit * 1000) / 1000 + 0.250 >= yUnit)
+        if ((double)Math.round((int) yUnit * 1000) / 1000 <= (double)Math.round(yUnit*1000)/1000 && (double)Math.round((int) yUnit * 1000) / 1000 + 0.250 >= (double)Math.round(yUnit*1000)/1000)
             return Entity.check[(int) (xUnit - a)][(int) (yUnit)] == 0;
-        return Entity.check[(int) (xUnit - a)][(int) (yUnit)] == 0 && Entity.check[(int) (xUnit - a)][(int) (yUnit + 0.5)] == 0;
+        return Entity.check[(int) (xUnit - a)][(int) (yUnit)] == 0 && Entity.check[(int) (xUnit - a)][(int) (yUnit + 0.750)] == 0;
     }
 
     public boolean checkDownIn() {
-        if (Math.round((int) yUnit * 1000) / 1000 <= yUnit && Math.round((int) yUnit * 1000) / 1000 + 0.250 >= yUnit)
+        if ((double)Math.round((int) yUnit * 1000) / 1000 <= (double)Math.round(yUnit*1000)/1000 && (double)Math.round((int) yUnit * 1000) / 1000 + 0.250 >= (double)Math.round(yUnit*1000)/1000)
             return Entity.check[(int) (xUnit + 1)][(int) (yUnit)] == 0;
-        return Entity.check[(int) (xUnit + 1)][(int) (yUnit)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit + 0.5)] == 0;
+        return Entity.check[(int) (xUnit + 1)][(int) (yUnit)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit + 0.750)] == 0;
     }
 
     public void move(double speedMax) {
         double speedUp;
-        if(xUnit==Math.round((int)xUnit*1000)/1000) speedUp=speedMax;
-        else speedUp=Math.min(speedMax, xUnit-Math.round((int)xUnit*1000)/1000);
+        if((double)Math.round(xUnit*1000)/1000==(double)Math.round((int)xUnit*1000)/1000) speedUp=speedMax;
+        else speedUp=Math.min(speedMax, xUnit-(double)Math.round((int)xUnit*1000)/1000);
         double speedDown;
-        if(xUnit== Math.round((int)xUnit*1000)/1000) speedDown=speedMax;
-        else speedDown=Math.min(speedMax, 1.000-xUnit+Math.round((int)xUnit*1000)/1000);
+        if((double)Math.round(xUnit*1000)/1000== (double)Math.round((int)xUnit*1000)/1000) speedDown=speedMax;
+        else speedDown=Math.min(speedMax, 1.000-xUnit+(double)Math.round((int)xUnit*1000)/1000);
         double speedLeft;
-        if(yUnit==Math.round((int)yUnit*1000)/1000) speedLeft=speedMax;
-        else speedLeft=Math.min(speedMax, yUnit-Math.round((int)yUnit*1000)/1000);
+        if((double)Math.round(yUnit*1000)/1000==(double)Math.round((int)yUnit*1000)/1000) speedLeft=speedMax;
+        else speedLeft=Math.min(speedMax, yUnit-(double)Math.round((int)yUnit*1000)/1000);
         double speedRight;
-        if(yUnit==Math.round((int)yUnit*1000)/1000+0.250) speedRight=speedMax;
-        else speedRight=Math.min(speedMax, 1.250-yUnit+Math.round((int)(yUnit-0.250)*1000)/1000);
+        if((double)Math.round(yUnit*1000)/1000==(double)Math.round((int)yUnit*1000)/1000+0.250) speedRight=speedMax;
+        else speedRight=Math.min(speedMax, !(0.250 - Math.round(yUnit*1000)/1000 + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000 <= 0) ? 0.250 - Math.round(yUnit*1000)/1000 + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000 : 1.25 - yUnit + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000);
         if (isGoNorth()&& checkUpIn(speedUp)) {
             setMoving(true);
             xUnit -= speedUp;
@@ -224,9 +231,9 @@ public abstract class Entity implements IRender {
 
     }
     public boolean checkDanger(){
-        if(Math.round((int) yUnit * 1000) / 1000 + 0.250 < yUnit)
+        if((double)Math.round((int) yUnit * 1000) / 1000 + 0.250 < yUnit)
             return check[(int)xUnit][(int)yUnit]>-1&&check[(int)xUnit][(int)(yUnit+1)]>-1;
-        if(Math.round((int)xUnit*1000)/1000!=xUnit)
+        if((double)Math.round((int)xUnit*1000)/1000!=xUnit)
             return check[(int)xUnit][(int)yUnit]>-1&&check[(int)xUnit+1][(int)(yUnit)]>-1;
         return check[(int)xUnit][(int)yUnit]>-1;
     }

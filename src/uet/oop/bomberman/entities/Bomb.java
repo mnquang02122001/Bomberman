@@ -10,7 +10,7 @@ public class Bomb extends Entity {
     int once2=0;
     int once3=0;
     int once4=0;
-    private int explodeTime = 100;
+    private int explodeTime = 200;
     public int explodeExistTime = 20;
     private boolean isExplode = false;
     public Bomb(double xUnit, double yUnit, Image img, boolean bomb){

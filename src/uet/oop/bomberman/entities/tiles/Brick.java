@@ -15,7 +15,7 @@ public class Brick extends Entity {
     public Brick(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         changement=false;
-        random=rd.nextInt()%8;
+        random=rd.nextInt()%20;
     }
     private int random;
     public boolean changement;

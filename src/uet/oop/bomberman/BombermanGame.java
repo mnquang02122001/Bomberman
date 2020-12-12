@@ -60,7 +60,7 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
         createMap(MAP_LV1);
-        bomberman = new Bomber(1.000, 1.000, Sprite.player_left.getFxImage());
+        bomberman = new Bomber(1, 1, Sprite.player_left.getFxImage());
         entities.add(bomberman);
         createMonster();
         createItem();
@@ -164,7 +164,9 @@ public class BombermanGame extends Application {
                 else entities.remove(entities.get(i));
 
             }
+
             else entities.get(i).update();
+            
         }
         listMonster.removeIf(monster -> !monster.isAlive());
 

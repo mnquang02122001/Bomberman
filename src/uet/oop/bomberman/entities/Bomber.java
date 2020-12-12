@@ -15,19 +15,20 @@ import java.util.List;
 public class Bomber extends Entity {
 
     private List<Bomb> bombList = new ArrayList<>();
-    boolean maxSpeed;
-    public double speedMax;
+    private int maxSpeedCount;
+    private double speedMax;
     public int bombCount;
     public int flameCount;
+    public int moveWait=6;
     public Bomber(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
         life = 3;
         waitToDie=true;
         countToDie=200;
-        speedMax=0.125;
+        speedMax=0.200;
         bombCount=1;
         flameCount=1;
-        maxSpeed=false;
+        maxSpeedCount=5;
     }
 
     public List<Bomb> getBombList() {
@@ -52,28 +53,28 @@ public class Bomber extends Entity {
         if (goNorth) {
             img = Sprite.player_up.getFxImage();
             if (moving) {
-                img = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 10).getFxImage();
+                img = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 30).getFxImage();
             }
             return;
         }
         if (goSouth) {
             img = Sprite.player_down.getFxImage();
             if (moving) {
-                img = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 10).getFxImage();
+                img = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 30).getFxImage();
             }
             return;
         }
         if (goWest) {
             img = Sprite.player_left.getFxImage();
             if (moving) {
-                img = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 10).getFxImage();
+                img = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 30).getFxImage();
             }
             return;
         }
         if (goEast) {
             img = Sprite.player_right.getFxImage();
             if (moving) {
-                img = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 10).getFxImage();
+                img = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 30).getFxImage();
             }
             return;
         }
@@ -111,9 +112,12 @@ public class Bomber extends Entity {
                 }
                 else if(BombermanGame.listItem.get(i) instanceof PowerUpFlames)
                     flameCount++;
-                else if(BombermanGame.listItem.get(i) instanceof PowerUpSpeed&&!maxSpeed) {
-                    speedMax += 0.05;
-                    maxSpeed = false;
+                else if(BombermanGame.listItem.get(i) instanceof PowerUpSpeed) {
+                    if(maxSpeedCount>0) {
+                        speedMax += 0.05;
+                        maxSpeedCount--;
+                    }
+
                 }
                 BombermanGame.listItem.get(i).setAlive(false);
             }
@@ -148,11 +152,15 @@ public class Bomber extends Entity {
     public void update() {
         Wait();
         if(danger){
-            if(!checkDanger()) die();
+           if(!checkDanger()) die();
         }
-        if(checkMeetEnemy()) die();
+        //if(checkMeetEnemy()) die();
         meetItem();
-        move(speedMax);
+        if(moveWait>0) moveWait--;
+        else {
+            move(speedMax);
+            moveWait=6;
+        }
         animate();
     }
 
