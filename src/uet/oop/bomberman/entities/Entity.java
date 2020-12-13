@@ -15,8 +15,8 @@ public abstract class Entity implements IRender {
     public static int height = BombermanGame.HEIGHT;
     public static int[][] check = new int[height][width];
     public static Map<Integer, Entity> link = new HashMap<>();
-    protected final int MAX_ANIMATE = 6300;
     public static boolean danger = false;
+    protected final int MAX_ANIMATE = 6300;
     public double xUnit;
     public double yUnit;
     public int value;
@@ -44,9 +44,9 @@ public abstract class Entity implements IRender {
     }
 
     public Entity(double xUnit, double yUnit, Image img, boolean bomb) {
-        if (bomb == true) {
-            this.xUnit = new Double(bombLocation((xUnit+0.0001d)));
-            this.yUnit = new Double(bombLocation(yUnit+0.0001d));
+        if (bomb) {
+            this.xUnit = bombLocation((xUnit + 0.0001d));
+            this.yUnit = bombLocation(yUnit + 0.0001d);
             updateLocationX();
             updateLocationY();
             setAlive(true);
@@ -124,13 +124,11 @@ public abstract class Entity implements IRender {
 
     public void updateLocationX() {
         this.x = xUnit * Sprite.SCALED_SIZE;
-        //this.y = yUnit * Sprite.SCALED_SIZE;
         this.value = (int) xUnit * width + (int) yUnit;
     }
 
     public void updateLocationY() {
         this.y = yUnit * Sprite.SCALED_SIZE;
-        //this.y = yUnit * Sprite.SCALED_SIZE;
         this.value = (int) xUnit * width + (int) yUnit;
     }
 
@@ -153,101 +151,75 @@ public abstract class Entity implements IRender {
 
     public boolean checkRightIn() {
 
-        if ((int)(((xUnit+0.0001d))*1000)%1000==0) {
-            return Entity.check[(int) ((xUnit+0.0001d))][(int) (yUnit + 0.7501)] == 0;
+        if ((int) (((xUnit + 0.0001d)) * 1000) % 1000 == 0) {
+            return Entity.check[(int) ((xUnit + 0.0001d))][(int) (yUnit + 0.7501)] == 0;
 
         }
 
-        return Entity.check[(int) ((xUnit+0.0001d))][(int) (yUnit + 0.7501d)] == 0 && Entity.check[(int) ((xUnit+1.0001d))][(int) (yUnit + 0.7501d)] == 0;
-
+        return Entity.check[(int) ((xUnit + 0.0001d))][(int) (yUnit + 0.7501d)] == 0 && Entity.check[(int) ((xUnit + 1.0001d))][(int) (yUnit + 0.7501d)] == 0;
 
 
     }
-    /*public boolean checkRightOut(){
-
-        if((int)(xUnit*10)%10!=0) return (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) ((xUnit+0.0001d))] == 0) && (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) ((xUnit+0.0001d))] == 0);
-        return true;
-    }
-    */
 
     public boolean checkLeftIn(double a) {
-        if ((int)(((xUnit+0.0001d))*1000)%1000==0) return Entity.check[(int) ((xUnit+0.0001d))][(int) (yUnit - a +0.0001d)] == 0;
-        return Entity.check[(int) ((xUnit+0.0001d))][(int) (yUnit - a +0.0001)] == 0 && Entity.check[(int) ((xUnit+1.0001d))][(int) (yUnit - a +0.0001)] == 0;
+        if ((int) (((xUnit + 0.0001d)) * 1000) % 1000 == 0)
+            return Entity.check[(int) ((xUnit + 0.0001d))][(int) (yUnit - a + 0.0001d)] == 0;
+        return Entity.check[(int) ((xUnit + 0.0001d))][(int) (yUnit - a + 0.0001)] == 0 && Entity.check[(int) ((xUnit + 1.0001d))][(int) (yUnit - a + 0.0001)] == 0;
 
     }
-    /*public boolean checkLeftOut(){
-
-        if((int)(xUnit*10)%10!=0) return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)((xUnit+0.0001d))]==0&&Entity.check[(int)(yUnit-0.25)+Entity.width*(int)((xUnit+0.0001d))]==0;
-
-        return true;
-    }
-    */
 
     public boolean checkUpIn(double a) {
-        if ((int)y<=yUnit&&yUnit<=(int)(yUnit+0.0001d)+0.750d)
-            return Entity.check[(int) (xUnit - a)][(int) (yUnit+0.0001d)] == 0;
-        return Entity.check[(int) (xUnit - a)][(int) (yUnit+0.0001d)] == 0 && Entity.check[(int) (xUnit - a)][(int) (yUnit + 0.7499d)] == 0;
+        if ((int) y <= yUnit && yUnit <= (int) (yUnit + 0.0001d) + 0.750d)
+            return Entity.check[(int) (xUnit - a)][(int) (yUnit + 0.0001d)] == 0;
+        return Entity.check[(int) (xUnit - a)][(int) (yUnit + 0.0001d)] == 0 && Entity.check[(int) (xUnit - a)][(int) (yUnit + 0.7499d)] == 0;
     }
 
     public boolean checkDownIn() {
-        if ((int)(y+0.0001d)+0.000d<=yUnit+0.0001d&&yUnit<=(int)(yUnit+0.0001d)+0.2501d) {
-            System.out.println("hahaha");
+        if ((int) (y + 0.0001d) + 0.000d <= yUnit + 0.0001d && yUnit <= (int) (yUnit + 0.0001d) + 0.2501d) {
             return Entity.check[(int) ((xUnit + 1.0001d))][(int) (yUnit + 0.0001d)] == 0;
 
         }
-        return Entity.check[(int) ((xUnit+1.0001d))][(int) (yUnit+0.0001d)] == 0 && Entity.check[(int) ((xUnit+1.0001d))][(int) (yUnit + 0.7499d)] == 0;
+        return Entity.check[(int) ((xUnit + 1.0001d))][(int) (yUnit + 0.0001d)] == 0 && Entity.check[(int) ((xUnit + 1.0001d))][(int) (yUnit + 0.7499d)] == 0;
     }
 
     public void move(double speedMax) {
         double speedDown;
-        if((int)(((xUnit+0.0001d))*1000)%1000==0) speedDown=speedMax;
-        else speedDown=Math.min(speedMax, 1.000-xUnit+(int)((xUnit+0.0001d)));
+        if ((int) (((xUnit + 0.0001d)) * 1000) % 1000 == 0) speedDown = speedMax;
+        else speedDown = Math.min(speedMax, 1.000 - xUnit + (int) ((xUnit + 0.0001d)));
         double speedLeft;
-        if ((int)((yUnit+0.0001d)*1000)%1000==0)
+        if ((int) ((yUnit + 0.0001d) * 1000) % 1000 == 0)
             speedLeft = speedMax;
-        else speedLeft = Math.min(speedMax, yUnit-(int)(yUnit+0.0001d));
+        else speedLeft = Math.min(speedMax, yUnit - (int) (yUnit + 0.0001d));
         double speedUp;
-        if((int)(xUnit*1000)%1000==0) speedUp=speedMax;
-        else speedUp=Math.min(speedMax, xUnit-(int)((xUnit+0.0001d)));
+        if ((int) (xUnit * 1000) % 1000 == 0) speedUp = speedMax;
+        else speedUp = Math.min(speedMax, xUnit - (int) ((xUnit + 0.0001d)));
         double speedRight;
         double value;
 
-        System.out.println("nonono");
-        System.out.println(((int)yUnit)+0.250d+"haiz");
-        System.out.println((yUnit+0.000d)+"haizboiz");
-        System.out.println((int)(yUnit+0.0001d)+0.250d>=yUnit+0.000d);
-        if((int)(yUnit+0.0001d)+0.250d>=yUnit+0.000d){
-            value=(int)(yUnit+0.0001d);
-        }
-        else value=1.000d+(int)(yUnit+0.0001d);
-        System.out.println(value+"nothing");
-        //System.out.println(value);
-        if((int)((yUnit+0.0001d+0.750d)*1000)%1000==0){
-            speedRight=speedMax;
-            System.out.println("yes");
-        }
-        else{
-            speedRight=Math.min(speedMax, 0.250d - yUnit + value);
-            System.out.println(speedRight+"hello");
+        if ((int) (yUnit + 0.0001d) + 0.250d >= yUnit + 0.000d) {
+            value = (int) (yUnit + 0.0001d);
+        } else value = 1.000d + (int) (yUnit + 0.0001d);
+        if ((int) ((yUnit + 0.0001d + 0.750d) * 1000) % 1000 == 0) {
+            speedRight = speedMax;
+        } else {
+            speedRight = Math.min(speedMax, 0.250d - yUnit + value);
         }
 
-        if (isGoNorth()){
+        if (isGoNorth()) {
 
-            if(checkUpIn(speedUp)) {
+            if (checkUpIn(speedUp)) {
                 setMoving(true);
                 xUnit -= speedUp;
                 updateLocationX();
             }
-        }
-        else if (isGoSouth()) {
+        } else if (isGoSouth()) {
 
-            if(checkDownIn()) {
+            if (checkDownIn()) {
                 setMoving(true);
                 xUnit += speedDown;
                 updateLocationX();
             }
-        }
-        else if (isGoWest()) {
+        } else if (isGoWest()) {
 
 
             if (checkLeftIn(speedLeft)) {
@@ -255,10 +227,9 @@ public abstract class Entity implements IRender {
                 yUnit -= speedLeft;
                 updateLocationY();
             }
-        }
-        else if (isGoEast()){
+        } else if (isGoEast()) {
 
-            if(checkRightIn()) {
+            if (checkRightIn()) {
                 setMoving(true);
                 yUnit += speedRight;
                 updateLocationY();
@@ -266,18 +237,21 @@ public abstract class Entity implements IRender {
         }
 
     }
-    public boolean checkDanger(){
-        if((int) (yUnit+0.0001d) + 0.250 < yUnit)
-            return check[(int)xUnit][(int)yUnit]>-1&&check[(int)xUnit][(int)(yUnit+1)]>-1;
-        if((int)((xUnit+0.0001d))*1000%1000!=0)
-            return check[(int)xUnit][(int)yUnit]>-1&&check[(int)(xUnit+0.0001d)][(int)(yUnit+0.0001d)]>-1;
-        return check[(int)xUnit][(int)yUnit]>-1;
+
+    public boolean checkDanger() {
+        if ((int) (yUnit + 0.0001d) + 0.250 < yUnit)
+            return check[(int) xUnit][(int) yUnit] > -1 && check[(int) xUnit][(int) (yUnit + 1)] > -1;
+        if ((int) ((xUnit + 0.0001d)) * 1000 % 1000 != 0)
+            return check[(int) xUnit][(int) yUnit] > -1 && check[(int) (xUnit + 0.0001d)][(int) (yUnit + 0.0001d)] > -1;
+        return check[(int) xUnit][(int) yUnit] > -1;
     }
-    public void Wait(){
-        if(countToDie>0) countToDie--;
-        else waitToDie=false;
+
+    public void Wait() {
+        if (countToDie > 0) countToDie--;
+        else waitToDie = false;
     }
-    public void die(){
+
+    public void die() {
         setAlive(false);
     }
 

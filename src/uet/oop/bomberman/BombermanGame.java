@@ -1,4 +1,3 @@
-
 package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
@@ -46,6 +45,7 @@ public class BombermanGame extends Application {
     public static final String MAP_LV3 = "res/levels/Level3.txt";
     public static final String THEME_PATH = "res/textures/theme.png";
     public static final String THEME_MUSIC_PATH = "res/music/theme.mp3";
+    public static final String LOSE_PATH = "res/textures/defeat.png";
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
     public static List<Entity> listMonster = new ArrayList<>();
@@ -67,18 +67,21 @@ public class BombermanGame extends Application {
         Group root = new Group();
         root.getChildren().add(canvas);
 
-        InputStream stream = new FileInputStream(THEME_PATH);
-        Image image = new Image(stream);
-        ImageView imageView = new ImageView();
-        imageView.setImage(image);
-        imageView.setFitWidth(1000);
-        imageView.setPreserveRatio(true);
-        Group root_menu = new Group(imageView);
+
+        Group root_menu = new Group(getImageView(THEME_PATH));
         Scene scene = new Scene(root);
+
+        Group root_lose = new Group(getImageView(LOSE_PATH));
+        Scene scene_lose = new Scene(root_lose, Sprite.SCALED_SIZE * 31, Sprite.SCALED_SIZE * 13);
+
+
         Scene scene_menu = new Scene(root_menu, Sprite.SCALED_SIZE * 31, Sprite.SCALED_SIZE * 13);
         scene_menu.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.S)){
+            if (event.getCode().equals(KeyCode.S)) {
                 stage.setScene(scene);
+            }
+            if (event.getCode().equals(KeyCode.E)) {
+                stage.close();
             }
         });
         bomberman = new Bomber(1, 1, Sprite.player_left.getFxImage());
@@ -97,6 +100,9 @@ public class BombermanGame extends Application {
             @Override
             public void handle(long l) {
                 stillObjects.addAll(bomberman.getBombList());
+                if (!bomberman.isAlive()) {
+                    stage.setScene(scene_lose);
+                }
                 try {
                     render();
                 } catch (FileNotFoundException e) {
@@ -110,12 +116,22 @@ public class BombermanGame extends Application {
 
     }
 
+    public ImageView getImageView(String path) throws FileNotFoundException {
+        InputStream stream = new FileInputStream(path);
+        Image image = new Image(stream);
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+        imageView.setFitWidth(1000);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
     public void createMonster() {
         listMonster.add(new Balloon(3, 29, Sprite.balloom_left1.getFxImage()));
-        listMonster.add(new Balloon(11, 29, Sprite.balloom_left1.getFxImage()));
-        listMonster.add(new Balloon(7, 20, Sprite.balloom_left1.getFxImage()));
+        listMonster.add(new Doll(11, 29, Sprite.doll_left1.getFxImage()));
+        listMonster.add(new Kondoria(7, 20, Sprite.kondoria_left1.getFxImage()));
         listMonster.add(new Minvo(1, 11, Sprite.minvo_left1.getFxImage()));
-        listMonster.add(new Minvo(7, 3, Sprite.minvo_left1.getFxImage()));
+        listMonster.add(new Oneal(7, 3, Sprite.oneal_left1.getFxImage()));
         entities.addAll(listMonster);
     }
 
@@ -140,7 +156,8 @@ public class BombermanGame extends Application {
             }
         }
     }
-    public void createItemAndBomb(){
+
+    public void createItemAndBomb() {
         for (int i = 0; i < entities.size(); i++) {
             if (!entities.get(i).isAlive()) {
                 if (entities.get(i) instanceof Bomb) {
@@ -175,7 +192,8 @@ public class BombermanGame extends Application {
 
         }
     }
-    public void createPortal(){
+
+    public void createPortal() {
         if (listMonster.isEmpty()) {
             if (countGate > 0) {
                 Entity gate = new Gate();
@@ -185,6 +203,7 @@ public class BombermanGame extends Application {
             }
         }
     }
+
     public void update() {
         createPortal();
         createItemAndBomb();
@@ -197,7 +216,7 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
-        if (changeScreen){
+        if (changeScreen) {
             stillObjects.clear();
             listMonster.clear();
             listItem.clear();
@@ -205,8 +224,6 @@ public class BombermanGame extends Application {
             changeScreen = false;
         }
     }
-
-
 
 
 }
