@@ -18,7 +18,7 @@ public class Bomber extends Entity {
     private List<Bomb> bombList = new ArrayList<>();
     private int maxSpeedCount;
     private double speedMax;
-    private boolean setADie;
+    public boolean setADie;
     private int countDieing;
     public int bombCount;
     public int flameCount;
@@ -56,37 +56,38 @@ public class Bomber extends Entity {
 
     @Override
     public void chooseImg() {
-        if (goNorth) {
-            img = Sprite.player_up.getFxImage();
-            if (moving) {
-                img = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 30).getFxImage();
+        if (setADie) img = Sprite.player_dead1.getFxImage();
+        else {
+            if (goNorth) {
+                img = Sprite.player_up.getFxImage();
+                if (moving) {
+                    img = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 30).getFxImage();
+                }
+                return;
             }
-            return;
-        }
-        if (goSouth) {
-            img = Sprite.player_down.getFxImage();
-            if (moving) {
-                img = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 30).getFxImage();
-            }
-            return;
-        }
-        if (goWest) {
-            img = Sprite.player_left.getFxImage();
-            if (moving) {
-                img = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 30).getFxImage();
-            }
-            return;
-        }
-        if (goEast) {
-            img = Sprite.player_right.getFxImage();
-            if (moving) {
-                img = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 30).getFxImage();
-            }
-            return;
-        }
-        if(setADie) img=Sprite.player_dead1.getFxImage();
-        else img = Sprite.player_down.getFxImage();
 
+            if (goSouth) {
+                img = Sprite.player_down.getFxImage();
+                if (moving) {
+                    img = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 30).getFxImage();
+                }
+                return;
+            }
+            if (goWest) {
+                img = Sprite.player_left.getFxImage();
+                if (moving) {
+                    img = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 30).getFxImage();
+                }
+                return;
+            }
+            if (goEast) {
+                img = Sprite.player_right.getFxImage();
+                if (moving) {
+                    img = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 30).getFxImage();
+                }
+                return;
+            } else img = Sprite.player_down.getFxImage();
+        }
     }
 
     public void render(GraphicsContext gc) {
