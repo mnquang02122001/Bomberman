@@ -21,7 +21,7 @@ public class Bomber extends Entity {
     public int bombCount;
     public int flameCount;
     public int moveWait=6;
-    public static boolean changeScreen=false;
+    public static boolean changeScreen = false;
     public Bomber(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
         life = 3;

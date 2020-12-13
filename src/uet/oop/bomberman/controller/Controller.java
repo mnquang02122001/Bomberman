@@ -32,7 +32,6 @@ public class Controller {
                         bomberman.bombCount--;
                     }
                     break;
-
             }
         });
 
