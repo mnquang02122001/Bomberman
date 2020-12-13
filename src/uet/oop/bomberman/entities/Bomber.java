@@ -18,10 +18,12 @@ public class Bomber extends Entity {
     private List<Bomb> bombList = new ArrayList<>();
     private int maxSpeedCount;
     private double speedMax;
+    private boolean setADie;
+    private int countDieing;
     public int bombCount;
     public int flameCount;
     public int moveWait=6;
-    public static boolean changeScreen = false;
+    public static boolean changeScreen=false;
     public Bomber(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
         life = 3;
@@ -31,6 +33,8 @@ public class Bomber extends Entity {
         bombCount=1;
         flameCount=1;
         maxSpeedCount=5;
+        setADie=false;
+        countDieing=100;
     }
 
     public List<Bomb> getBombList() {
@@ -80,8 +84,8 @@ public class Bomber extends Entity {
             }
             return;
         }
-
-        img = Sprite.player_down.getFxImage();
+        if(setADie) img=Sprite.player_dead1.getFxImage();
+        else img = Sprite.player_down.getFxImage();
 
     }
 
@@ -141,12 +145,13 @@ public class Bomber extends Entity {
     public void die(){
         if(life>0){
 
-            if(!waitToDie){
+            if(waitToDie==false){
                 life--;
                 waitToDie=true;
                 countToDie=200;
-                reset();
+                setADie=true;
             }
+            //System.out.println(life+"/");
         }
 
         else setAlive(false);
@@ -156,16 +161,25 @@ public class Bomber extends Entity {
     public void update() {
         Wait();
         if(danger){
-           if(!checkDanger()) die();
+            if(!checkDanger()) die();
         }
-        if(checkMeetEnemy()){
-            die();
+        if(setADie){
+            if(countDieing>0){
+                countDieing--;
+            }
+            else{
+                reset();
+                countDieing=100;
+                setADie=false;
+            }
         }
+        if(checkMeetEnemy()) die();
+
         meetItem();
         if(moveWait>0) moveWait--;
         else {
             move(speedMax);
-            moveWait=3;
+            moveWait=6;
         }
         animate();
     }
