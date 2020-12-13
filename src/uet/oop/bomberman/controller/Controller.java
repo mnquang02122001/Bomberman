@@ -27,12 +27,11 @@ public class Controller {
 
                     break;
                 case SPACE:
-                    if(bomberman.bombCount>0) {
+                    if (bomberman.bombCount > 0) {
                         BombermanGame.entities.add(new Bomb(bomberman.xUnit, bomberman.yUnit, Sprite.bomb.getFxImage(), true));
                         bomberman.bombCount--;
                     }
                     break;
-
             }
         });
 

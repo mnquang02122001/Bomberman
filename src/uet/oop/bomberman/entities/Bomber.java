@@ -161,7 +161,7 @@ public class Bomber extends Entity {
     public void update() {
         Wait();
         if(danger){
-           if(!checkDanger()) die();
+            if(!checkDanger()) die();
         }
         if(setADie){
             if(countDieing>0){

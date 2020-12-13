@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Oneal extends Enemy{
+public class Oneal extends Enemy {
     public Oneal(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
     }

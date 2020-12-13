@@ -110,31 +110,15 @@ public class BombermanGame extends Application {
 
     }
 
-    public void createMonster(){
-        Entity first = new Balloon(3, 3, Sprite.balloom_left1.getFxImage());
-        Entity second = new Doll(1,1, Sprite.doll_left1.getFxImage());
-        Entity third = new Kondoria(5, 5, Sprite.kondoria_left1.getFxImage());
-        Entity fourth = new Minvo(7, 7, Sprite.minvo_left1.getFxImage());
-        Entity fifth = new Oneal(8, 8, Sprite.oneal_left1.getFxImage());
-        entities.add(first);
-        entities.add(second);
-        entities.add(third);
-        entities.add(fourth);
-        entities.add(fifth);
-
-        listMonster.add(first);
-        listMonster.add(second);
-        listMonster.add(third);
-        listMonster.add(fourth);
-        listMonster.add(fifth);
+    public void createMonster() {
+        listMonster.add(new Balloon(3, 29, Sprite.balloom_left1.getFxImage()));
+        listMonster.add(new Balloon(11, 29, Sprite.balloom_left1.getFxImage()));
+        listMonster.add(new Balloon(7, 20, Sprite.balloom_left1.getFxImage()));
+        listMonster.add(new Minvo(1, 11, Sprite.minvo_left1.getFxImage()));
+        listMonster.add(new Minvo(7, 3, Sprite.minvo_left1.getFxImage()));
+        entities.addAll(listMonster);
     }
 
-
-    public void createItem(){
-        Entity Item=new PowerUpBombs(1.000f, 2.000f, Sprite.powerup_bombs.getFxImage());
-        listItem.add(Item);
-        entities.add(Item);
-    }
     public void createMap(String path) throws FileNotFoundException {
         Scanner sc = new Scanner(new FileReader(path));
         for (int i = 0; i < HEIGHT; i++) {
@@ -144,8 +128,6 @@ public class BombermanGame extends Application {
                 if (s.charAt(j) == '#') {
                     object = new Wall(i, j, Sprite.wall.getFxImage());
                     Entity.check[i][j] = 2;
-
-
                 } else if (s.charAt(j) == '*') {
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                     Entity.check[i][j] = 1;
@@ -158,60 +140,56 @@ public class BombermanGame extends Application {
             }
         }
     }
-
-    public void update() {
-
-        if(listMonster.isEmpty()){
-            if(countGate>0) {
-                Entity gate = new Gate();
-                listMonster.add(gate);
-                entities.add(gate);
-                countGate--;
-            }
-        }
-
-
-        for(int i=0; i<entities.size(); i++) {
+    public void createItemAndBomb(){
+        for (int i = 0; i < entities.size(); i++) {
             if (!entities.get(i).isAlive()) {
-                if(entities.get(i) instanceof Bomb) {
+                if (entities.get(i) instanceof Bomb) {
                     bomberman.bombCount++;
                     entities.remove(entities.get(i));
-                }
-                else if(entities.get(i) instanceof Brick && ((Brick) entities.get(i)).changement==true) {
+                } else if (entities.get(i) instanceof Brick && ((Brick) entities.get(i)).change) {
                     Random rd = new Random();
                     int random = rd.nextInt() % 3;
                     Entity item;
                     switch (random) {
                         case 0:
-                            item=new PowerUpBombs(entities.get(i).xUnit, entities.get(i).yUnit, Sprite.powerup_bombs.getFxImage());
+                            item = new PowerUpBombs(entities.get(i).xUnit, entities.get(i).yUnit, Sprite.powerup_bombs.getFxImage());
                             break;
                         case 1:
-                            item=new PowerUpFlames(entities.get(i).xUnit, entities.get(i).yUnit, Sprite.powerup_flamepass.getFxImage());
+                            item = new PowerUpFlames(entities.get(i).xUnit, entities.get(i).yUnit, Sprite.powerup_flames.getFxImage());
                             break;
                         default:
-                            item=new PowerUpSpeed(entities.get(i).xUnit, entities.get(i).yUnit, Sprite.powerup_speed.getFxImage());
+                            item = new PowerUpSpeed(entities.get(i).xUnit, entities.get(i).yUnit, Sprite.powerup_speed.getFxImage());
                             break;
 
 
                     }
                     listItem.add(item);
                     entities.remove(i);
+                    i--;
                     entities.add(0, item);
 
 
-                }
-                else entities.remove(entities.get(i));
+                } else entities.remove(entities.get(i));
 
-            }
+            } else entities.get(i).update();
 
-            else entities.get(i).update();
-            
         }
+    }
+    public void createPortal(){
+        if (listMonster.isEmpty()) {
+            if (countGate > 0) {
+                Entity gate = new Gate();
+                listMonster.add(gate);
+                stillObjects.add(gate);
+                countGate--;
+            }
+        }
+    }
+    public void update() {
+        createPortal();
+        createItemAndBomb();
         listMonster.removeIf(monster -> !monster.isAlive());
-
         listItem.removeIf(item -> !item.isAlive());
-        System.out.println(bomberman.xUnit+" "+bomberman.yUnit);
-
     }
 
 
