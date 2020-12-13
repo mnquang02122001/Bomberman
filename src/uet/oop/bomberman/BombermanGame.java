@@ -1,3 +1,4 @@
+
 package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
@@ -6,6 +7,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import uet.oop.bomberman.Music.Music;
 import uet.oop.bomberman.controller.Controller;
@@ -22,8 +26,10 @@ import uet.oop.bomberman.entities.tiles.Grass;
 import uet.oop.bomberman.entities.tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,15 +41,17 @@ public class BombermanGame extends Application {
 
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
-    public static final String MAP_LV1 = "res/levels/Level2.txt";
+    public static final String MAP_LV1 = "res/levels/Level1.txt";
+    public static final String MAP_LV2 = "res/levels/Level2.txt";
+    public static final String MAP_LV3 = "res/levels/Level3.txt";
+    public static final String THEME_PATH = "res/textures/theme.png";
     public static final String THEME_MUSIC_PATH = "res/music/theme.mp3";
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
-    public static List<Entity> listMonster=new ArrayList<>();
-    public static List<Entity> listItem=new ArrayList<>();
+    public static List<Entity> listMonster = new ArrayList<>();
+    public static List<Entity> listItem = new ArrayList<>();
     private Bomber bomberman;
-    private int countGate=1;
-    private static boolean isFirst = true;
+    private int countGate = 1;
     private GraphicsContext gc;
     private Canvas canvas;
 
@@ -53,24 +61,35 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) throws FileNotFoundException {
-        // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
-        // Tao root container
         Group root = new Group();
         root.getChildren().add(canvas);
 
-        // Tao scene
+        InputStream stream = new FileInputStream(THEME_PATH);
+        Image image = new Image(stream);
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+        imageView.setFitWidth(1000);
+        imageView.setPreserveRatio(true);
+        Group root_menu = new Group(imageView);
         Scene scene = new Scene(root);
-        createMap(MAP_LV1);
-        bomberman = new Bomber(1.000f, 1.000f, Sprite.player_left.getFxImage());
+        Scene scene_menu = new Scene(root_menu, Sprite.SCALED_SIZE * 31, Sprite.SCALED_SIZE * 13);
+        scene_menu.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.S)){
+                stage.setScene(scene);
+            }
+        });
+        bomberman = new Bomber(1, 1, Sprite.player_left.getFxImage());
         entities.add(bomberman);
-        //createMonster();
-        createItem();
+        Controller.input(scene, bomberman);
+        createMap(MAP_LV1);
+        createMonster();
         Music.play(THEME_MUSIC_PATH);
-        // Them scene vao stage
-        stage.setScene(scene);
+
+
+        stage.setScene(scene_menu);
         stage.show();
 
 
@@ -78,16 +97,19 @@ public class BombermanGame extends Application {
             @Override
             public void handle(long l) {
                 stillObjects.addAll(bomberman.getBombList());
-                render();
+                try {
+                    render();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 update();
             }
         };
         timer.start();
-        Controller.input(scene, bomberman);
 
 
     }
-    /*
+
     public void createMonster(){
         Entity first = new Balloon(3, 3, Sprite.balloom_left1.getFxImage());
         Entity second = new Doll(1,1, Sprite.doll_left1.getFxImage());
@@ -106,7 +128,7 @@ public class BombermanGame extends Application {
         listMonster.add(fourth);
         listMonster.add(fifth);
     }
-    */
+
 
     public void createItem(){
         Entity Item=new PowerUpBombs(1.000f, 2.000f, Sprite.powerup_bombs.getFxImage());
@@ -138,7 +160,7 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
-        /*
+
         if(listMonster.isEmpty()){
             if(countGate>0) {
                 Entity gate = new Gate();
@@ -148,7 +170,7 @@ public class BombermanGame extends Application {
             }
         }
 
-        */
+
         for(int i=0; i<entities.size(); i++) {
             if (!entities.get(i).isAlive()) {
                 if(entities.get(i) instanceof Bomb) {
@@ -193,13 +215,20 @@ public class BombermanGame extends Application {
     }
 
 
-    public void render() {
+    public void render() throws FileNotFoundException {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
-        if(changeScreen==true)
-            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        if (changeScreen){
+            stillObjects.clear();
+            listMonster.clear();
+            listItem.clear();
+            createMap(MAP_LV2);
+            changeScreen = false;
+        }
     }
+
+
 
 
 }
