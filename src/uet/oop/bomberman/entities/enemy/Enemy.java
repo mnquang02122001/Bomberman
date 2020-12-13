@@ -6,10 +6,13 @@ import uet.oop.bomberman.AI.AI;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.powers.PowerUpSpeed;
+import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Enemy extends Entity {
     //private static int timeWaiting=10;
     private static int timeMove = 20;
+    protected int countDie;
+    private boolean isDie;
     private double speedMax;
     private int moveWait;
     private int maxSpeedCount;
@@ -23,32 +26,42 @@ public abstract class Enemy extends Entity {
         speedMax=0.200;
         moveWait=5;
         maxSpeedCount=4;
-
+        countDie=80;
+        isDie=false;
+        setMoving(true);
     }
 
     public void randomDirection() {
-        int rand = ai.calculateDir();
-        if (rand == 0) {
-            setGoEast(true);
-            setGoNorth(false);
-            setGoSouth(false);
-            setGoWest(false);
+        if(isMoving()) {
+            int rand = ai.calculateDir();
+            if (rand == 0) {
+                setGoEast(true);
+                setGoNorth(false);
+                setGoSouth(false);
+                setGoWest(false);
+            }
+            if (rand == 1) {
+                setGoEast(false);
+                setGoNorth(true);
+                setGoSouth(false);
+                setGoWest(false);
+            } else if (rand == 2) {
+                setGoEast(false);
+                setGoNorth(false);
+                setGoSouth(true);
+                setGoWest(false);
+            } else if (rand == 3) {
+                setGoEast(false);
+                setGoNorth(false);
+                setGoSouth(false);
+                setGoWest(true);
+            }
         }
-        if (rand == 1) {
+        else{
             setGoEast(false);
-            setGoNorth(true);
-            setGoSouth(false);
             setGoWest(false);
-        } else if (rand == 2) {
-            setGoEast(false);
-            setGoNorth(false);
-            setGoSouth(true);
-            setGoWest(false);
-        } else if (rand == 3) {
-            setGoEast(false);
-            setGoNorth(false);
             setGoSouth(false);
-            setGoWest(true);
+            setGoNorth(false);
         }
     }
     public void meetSpeedUp(){
@@ -67,12 +80,22 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    public void die(){
+        if(countDie>0){
+            countDie--;
+        }
+        else setAlive(false);
+    }
     public void update(){
 
 
         if(danger){
-            if(!checkDanger()) die();
+            if(!checkDanger()){
+                isDie=true;
+                setMoving(false);
+            }
         }
+        if(isDie) die();
         if (timeMove > 0) {
             timeMove--;
         } else {

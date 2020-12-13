@@ -18,6 +18,8 @@ public class Bomber extends Entity {
     private List<Bomb> bombList = new ArrayList<>();
     private int maxSpeedCount;
     private double speedMax;
+    private boolean setADie;
+    private int countDieing;
     public int bombCount;
     public int flameCount;
     public int moveWait=6;
@@ -31,6 +33,8 @@ public class Bomber extends Entity {
         bombCount=1;
         flameCount=1;
         maxSpeedCount=5;
+        setADie=false;
+        countDieing=100;
     }
 
     public List<Bomb> getBombList() {
@@ -80,8 +84,8 @@ public class Bomber extends Entity {
             }
             return;
         }
-
-        img = Sprite.player_down.getFxImage();
+        if(setADie) img=Sprite.player_dead1.getFxImage();
+        else img = Sprite.player_down.getFxImage();
 
     }
 
@@ -145,7 +149,7 @@ public class Bomber extends Entity {
                 life--;
                 waitToDie=true;
                 countToDie=200;
-                reset();
+                setADie=true;
             }
             //System.out.println(life+"/");
         }
@@ -159,9 +163,18 @@ public class Bomber extends Entity {
         if(danger){
            if(!checkDanger()) die();
         }
-        if(checkMeetEnemy()){
-            die();
+        if(setADie){
+            if(countDieing>0){
+                countDieing--;
+            }
+            else{
+                reset();
+                countDieing=100;
+                setADie=false;
+            }
         }
+        //if(checkMeetEnemy()) die();
+
         meetItem();
         if(moveWait>0) moveWait--;
         else {

@@ -64,9 +64,9 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
         createMap(MAP_LV1);
-        bomberman = new Bomber(1, 1, Sprite.player_left.getFxImage());
+        bomberman = new Bomber(1.000f, 1.000f, Sprite.player_left.getFxImage());
         entities.add(bomberman);
-        createMonster();
+        //createMonster();
         createItem();
         Music.play(THEME_MUSIC_PATH);
         // Them scene vao stage
@@ -87,6 +87,7 @@ public class BombermanGame extends Application {
 
 
     }
+    /*
     public void createMonster(){
         Entity first = new Balloon(3, 3, Sprite.balloom_left1.getFxImage());
         Entity second = new Doll(1,1, Sprite.doll_left1.getFxImage());
@@ -105,8 +106,10 @@ public class BombermanGame extends Application {
         listMonster.add(fourth);
         listMonster.add(fifth);
     }
+    */
+
     public void createItem(){
-        Entity Item=new PowerUpBombs(1.000, 2.000, Sprite.powerup_bombs.getFxImage());
+        Entity Item=new PowerUpBombs(1.000f, 2.000f, Sprite.powerup_bombs.getFxImage());
         listItem.add(Item);
         entities.add(Item);
     }
@@ -135,6 +138,7 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        /*
         if(listMonster.isEmpty()){
             if(countGate>0) {
                 Entity gate = new Gate();
@@ -143,6 +147,8 @@ public class BombermanGame extends Application {
                 countGate--;
             }
         }
+
+        */
         for(int i=0; i<entities.size(); i++) {
             if (!entities.get(i).isAlive()) {
                 if(entities.get(i) instanceof Bomb) {
@@ -182,6 +188,7 @@ public class BombermanGame extends Application {
         listMonster.removeIf(monster -> !monster.isAlive());
 
         listItem.removeIf(item -> !item.isAlive());
+        System.out.println(bomberman.xUnit+" "+bomberman.yUnit);
 
     }
 

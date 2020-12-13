@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.enemy;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -18,5 +19,12 @@ public class Minvo extends Enemy{
             return;
         }
         img = Sprite.minvo_dead.getFxImage();
+    }
+
+    public void render(GraphicsContext gc) {
+        if (alive) {
+            chooseImg();
+        }
+        super.render(gc);
     }
 }
