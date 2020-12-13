@@ -1,45 +1,40 @@
 package uet.oop.bomberman.entities.tiles;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.powers.PowerUpBombs;
-import uet.oop.bomberman.entities.powers.PowerUpFlames;
-import uet.oop.bomberman.entities.powers.PowerUpSpeed;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Random;
 
 public class Brick extends Entity {
+    private int random;
+    public boolean change;
+    Random rd = new Random();
+    private int countPresent;
+
     public Brick(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        changement=false;
-        random=rd.nextInt()%3;
-        countPresent=1;
+        change = false;
+        random = rd.nextInt() % 3;
+        countPresent = 1;
     }
-    private int random;
-    public boolean changement;
-    private int countPresent;
-    Random rd=new Random();
+
     public void update() {
 
-        if(check[value/width][value%width]==-1) {
+        if (check[value / width][value % width] == -1) {
             img = Sprite.bomb_exploded2.getFxImage();
 
-        }
-        else{
-            if(check[value/width][value%width]==1)
+        } else {
+            if (check[value / width][value % width] == 1)
                 img = Sprite.brick.getFxImage();
             else {
-                if(random==0){
-                    if(countPresent>0){
-                        changement=true;
+                if (random == 0) {
+                    if (countPresent > 0) {
+                        change = true;
                         countPresent--;
-                    }
-                    else changement=false;
+                    } else change = false;
                 }
-                img=Sprite.grass.getFxImage();
+                img = Sprite.grass.getFxImage();
             }
             setAlive(false);
 

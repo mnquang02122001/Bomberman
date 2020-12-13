@@ -141,13 +141,12 @@ public class Bomber extends Entity {
     public void die(){
         if(life>0){
 
-            if(waitToDie==false){
+            if(!waitToDie){
                 life--;
                 waitToDie=true;
                 countToDie=200;
                 reset();
             }
-            //System.out.println(life+"/");
         }
 
         else setAlive(false);
@@ -166,7 +165,7 @@ public class Bomber extends Entity {
         if(moveWait>0) moveWait--;
         else {
             move(speedMax);
-            moveWait=6;
+            moveWait=3;
         }
         animate();
     }

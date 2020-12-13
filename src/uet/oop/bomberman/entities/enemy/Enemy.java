@@ -8,21 +8,20 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.powers.PowerUpSpeed;
 
 public abstract class Enemy extends Entity {
-    //private static int timeWaiting=10;
     private static int timeMove = 20;
+    protected AI ai;
     private double speedMax;
     private int moveWait;
     private int maxSpeedCount;
-    protected AI ai;
 
     public Enemy(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
         ai = new AI();
         alive = true;
-        life=1;
-        speedMax=0.200;
-        moveWait=5;
-        maxSpeedCount=4;
+        life = 1;
+        speedMax = 0.200;
+        moveWait = 5;
+        maxSpeedCount = 4;
 
     }
 
@@ -51,8 +50,9 @@ public abstract class Enemy extends Entity {
             setGoWest(true);
         }
     }
-    public void meetSpeedUp(){
-        for(int i = 0; i< BombermanGame.listItem.size(); i++) {
+
+    public void meetSpeedUp() {
+        for (int i = 0; i < BombermanGame.listItem.size(); i++) {
             double X = xUnit - BombermanGame.listItem.get(i).xUnit;
             double Y = yUnit - BombermanGame.listItem.get(i).yUnit;
             if (X * X + Y * Y <= 0.500 * 0.500) {
@@ -67,11 +67,11 @@ public abstract class Enemy extends Entity {
         }
     }
 
-    public void update(){
+    public void update() {
 
 
-        if(danger){
-            if(!checkDanger()) die();
+        if (danger) {
+            if (!checkDanger()) die();
         }
         if (timeMove > 0) {
             timeMove--;
@@ -79,10 +79,10 @@ public abstract class Enemy extends Entity {
             timeMove = 20;
             randomDirection();
         }
-        if(moveWait>0) moveWait--;
+        if (moveWait > 0) moveWait--;
         else {
             move(speedMax);
-            moveWait=6;
+            moveWait = 6;
         }
         animate();
 
