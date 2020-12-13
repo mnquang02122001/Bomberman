@@ -3,7 +3,7 @@ package uet.oop.bomberman.entities.enemy;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Kondoria extends Enemy{
+public class Kondoria extends Enemy {
     public Kondoria(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
     }

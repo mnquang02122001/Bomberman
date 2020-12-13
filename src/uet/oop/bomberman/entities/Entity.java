@@ -15,8 +15,8 @@ public abstract class Entity implements IRender {
     public static int height = BombermanGame.HEIGHT;
     public static int[][] check = new int[height][width];
     public static Map<Integer, Entity> link = new HashMap<>();
-    protected final int MAX_ANIMATE = 6300;
     public static boolean danger = false;
+    protected final int MAX_ANIMATE = 6300;
     public double xUnit;
     public double yUnit;
     public int value;
@@ -124,13 +124,11 @@ public abstract class Entity implements IRender {
 
     public void updateLocationX() {
         this.x = xUnit * Sprite.SCALED_SIZE;
-        //this.y = yUnit * Sprite.SCALED_SIZE;
         this.value = (int) xUnit * width + (int) yUnit;
     }
 
     public void updateLocationY() {
         this.y = yUnit * Sprite.SCALED_SIZE;
-        //this.y = yUnit * Sprite.SCALED_SIZE;
         this.value = (int) xUnit * width + (int) yUnit;
     }
 
@@ -153,7 +151,7 @@ public abstract class Entity implements IRender {
 
     public boolean checkRightIn() {
 
-        if ((double)Math.round((int) (xUnit) * 1000) / 1000 == (double)Math.round(xUnit*1000)/1000) {
+        if ((double) Math.round((int) (xUnit) * 1000) / 1000 == (double) Math.round(xUnit * 1000) / 1000) {
             return Entity.check[(int) (xUnit)][(int) (yUnit + 0.750)] == 0;
 
         }
@@ -161,62 +159,49 @@ public abstract class Entity implements IRender {
         return Entity.check[(int) (xUnit)][(int) (yUnit + 0.750)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit + 0.750)] == 0;
 
 
-
     }
-    /*public boolean checkRightOut(){
-
-        if((int)(xUnit*10)%10!=0) return (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit)] == 0) && (Entity.check[(int) (yUnit + 0.75) + Entity.width * (int) (xUnit + 1)] == 0);
-        return true;
-    }
-    */
 
     public boolean checkLeftIn(double a) {
-        if ((double)Math.round((int) xUnit * 1000) / 1000 == (double)Math.round(xUnit*1000)/1000) return Entity.check[(int) (xUnit)][(int) (yUnit - 0.25)] == 0;
+        if ((double) Math.round((int) xUnit * 1000) / 1000 == (double) Math.round(xUnit * 1000) / 1000)
+            return Entity.check[(int) (xUnit)][(int) (yUnit - 0.25)] == 0;
         return Entity.check[(int) (xUnit)][(int) (yUnit - a)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit - a)] == 0;
 
     }
-    /*public boolean checkLeftOut(){
-
-        if((int)(xUnit*10)%10!=0) return Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit)]==0&&Entity.check[(int)(yUnit-0.25)+Entity.width*(int)(xUnit+1)]==0;
-
-        return true;
-    }
-    */
 
     public boolean checkUpIn(double a) {
-        if ((double)Math.round((int) yUnit * 1000) / 1000 <= (double)Math.round(yUnit*1000)/1000 && (double)Math.round((int) yUnit * 1000) / 1000 + 0.250 >= (double)Math.round(yUnit*1000)/1000)
+        if ((double) Math.round((int) yUnit * 1000) / 1000 <= (double) Math.round(yUnit * 1000) / 1000 && (double) Math.round((int) yUnit * 1000) / 1000 + 0.250 >= (double) Math.round(yUnit * 1000) / 1000)
             return Entity.check[(int) (xUnit - a)][(int) (yUnit)] == 0;
         return Entity.check[(int) (xUnit - a)][(int) (yUnit)] == 0 && Entity.check[(int) (xUnit - a)][(int) (yUnit + 0.750)] == 0;
     }
 
     public boolean checkDownIn() {
-        if ((double)Math.round((int) yUnit * 1000) / 1000 <= (double)Math.round(yUnit*1000)/1000 && (double)Math.round((int) yUnit * 1000) / 1000 + 0.250 >= (double)Math.round(yUnit*1000)/1000)
+        if ((double) Math.round((int) yUnit * 1000) / 1000 <= (double) Math.round(yUnit * 1000) / 1000 && (double) Math.round((int) yUnit * 1000) / 1000 + 0.250 >= (double) Math.round(yUnit * 1000) / 1000)
             return Entity.check[(int) (xUnit + 1)][(int) (yUnit)] == 0;
         return Entity.check[(int) (xUnit + 1)][(int) (yUnit)] == 0 && Entity.check[(int) (xUnit + 1)][(int) (yUnit + 0.750)] == 0;
     }
 
     public void move(double speedMax) {
-        if (isGoNorth()){
+        if (isGoNorth()) {
             double speedUp;
-            if((double)Math.round(xUnit*1000)/1000==(double)Math.round((int)xUnit*1000)/1000) speedUp=speedMax;
-            else speedUp=Math.min(speedMax, xUnit-(double)Math.round((int)xUnit*1000)/1000);
-            if(checkUpIn(speedUp)) {
+            if ((double) Math.round(xUnit * 1000) / 1000 == (double) Math.round((int) xUnit * 1000) / 1000)
+                speedUp = speedMax;
+            else speedUp = Math.min(speedMax, xUnit - (double) Math.round((int) xUnit * 1000) / 1000);
+            if (checkUpIn(speedUp)) {
                 setMoving(true);
                 xUnit -= speedUp;
                 updateLocationX();
             }
-        }
-        else if (isGoSouth()) {
+        } else if (isGoSouth()) {
             double speedDown;
-            if((double)Math.round(xUnit*1000)/1000== (double)Math.round((int)xUnit*1000)/1000) speedDown=speedMax;
-            else speedDown=Math.min(speedMax, 1.000-xUnit+(double)Math.round((int)xUnit*1000)/1000);
-            if(checkDownIn()) {
+            if ((double) Math.round(xUnit * 1000) / 1000 == (double) Math.round((int) xUnit * 1000) / 1000)
+                speedDown = speedMax;
+            else speedDown = Math.min(speedMax, 1.000 - xUnit + (double) Math.round((int) xUnit * 1000) / 1000);
+            if (checkDownIn()) {
                 setMoving(true);
                 xUnit += speedDown;
                 updateLocationX();
             }
-        }
-        else if (isGoWest()) {
+        } else if (isGoWest()) {
             double speedLeft;
             if ((double) Math.round(yUnit * 1000) / 1000 == (double) Math.round((int) yUnit * 1000) / 1000)
                 speedLeft = speedMax;
@@ -227,12 +212,13 @@ public abstract class Entity implements IRender {
                 yUnit -= speedLeft;
                 updateLocationY();
             }
-        }
-        else if (isGoEast()){
+        } else if (isGoEast()) {
             double speedRight;
-            if((double)Math.round(yUnit*1000)/1000==(double)Math.round((int)yUnit*1000)/1000+0.250) speedRight=speedMax;
-            else speedRight=Math.min(speedMax, !(0.250 - Math.round(yUnit*1000)/1000 + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000 <= 0) ? 0.250 - Math.round(yUnit*1000)/1000 + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000 : 1.25 - yUnit + (double)Math.round((int) (yUnit - 0.250) * 1000) / 1000);
-            if(checkRightIn()) {
+            if ((double) Math.round(yUnit * 1000) / 1000 == (double) Math.round((int) yUnit * 1000) / 1000 + 0.250)
+                speedRight = speedMax;
+            else
+                speedRight = Math.min(speedMax, !(0.250 - Math.round(yUnit * 1000) / 1000 + (double) Math.round((int) (yUnit - 0.250) * 1000) / 1000 <= 0) ? 0.250 - Math.round(yUnit * 1000) / 1000 + (double) Math.round((int) (yUnit - 0.250) * 1000) / 1000 : 1.25 - yUnit + (double) Math.round((int) (yUnit - 0.250) * 1000) / 1000);
+            if (checkRightIn()) {
                 setMoving(true);
                 yUnit += speedRight;
                 updateLocationY();
@@ -240,18 +226,21 @@ public abstract class Entity implements IRender {
         }
 
     }
-    public boolean checkDanger(){
-        if((double)Math.round((int) yUnit * 1000) / 1000 + 0.250 < yUnit)
-            return check[(int)xUnit][(int)yUnit]>-1&&check[(int)xUnit][(int)(yUnit+1)]>-1;
-        if((double)Math.round((int)xUnit*1000)/1000!=xUnit)
-            return check[(int)xUnit][(int)yUnit]>-1&&check[(int)xUnit+1][(int)(yUnit)]>-1;
-        return check[(int)xUnit][(int)yUnit]>-1;
+
+    public boolean checkDanger() {
+        if ((double) Math.round((int) yUnit * 1000) / 1000 + 0.250 < yUnit)
+            return check[(int) xUnit][(int) yUnit] > -1 && check[(int) xUnit][(int) (yUnit + 1)] > -1;
+        if ((double) Math.round((int) xUnit * 1000) / 1000 != xUnit)
+            return check[(int) xUnit][(int) yUnit] > -1 && check[(int) xUnit + 1][(int) (yUnit)] > -1;
+        return check[(int) xUnit][(int) yUnit] > -1;
     }
-    public void Wait(){
-        if(countToDie>0) countToDie--;
-        else waitToDie=false;
+
+    public void Wait() {
+        if (countToDie > 0) countToDie--;
+        else waitToDie = false;
     }
-    public void die(){
+
+    public void die() {
         setAlive(false);
     }
 
