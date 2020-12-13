@@ -6,6 +6,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import uet.oop.bomberman.Music.Music;
 import uet.oop.bomberman.controller.Controller;
@@ -22,8 +25,10 @@ import uet.oop.bomberman.entities.tiles.Grass;
 import uet.oop.bomberman.entities.tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -38,6 +43,7 @@ public class BombermanGame extends Application {
     public static final String MAP_LV1 = "res/levels/Level1.txt";
     public static final String MAP_LV2 = "res/levels/Level2.txt";
     public static final String MAP_LV3 = "res/levels/Level3.txt";
+    public static final String THEME_PATH = "res/textures/theme.png";
     public static final String THEME_MUSIC_PATH = "res/music/theme.mp3";
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
@@ -60,8 +66,29 @@ public class BombermanGame extends Application {
         Group root = new Group();
         root.getChildren().add(canvas);
 
+        InputStream stream = new FileInputStream(THEME_PATH);
+        Image image = new Image(stream);
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+        imageView.setFitWidth(1000);
+        imageView.setPreserveRatio(true);
+        Group root_menu = new Group(imageView);
         Scene scene = new Scene(root);
-        stage.setScene(scene);
+        Scene scene_menu = new Scene(root_menu, Sprite.SCALED_SIZE * 31, Sprite.SCALED_SIZE * 13);
+        scene_menu.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.S)){
+                stage.setScene(scene);
+            }
+        });
+        bomberman = new Bomber(1, 1, Sprite.player_left.getFxImage());
+        entities.add(bomberman);
+        Controller.input(scene, bomberman);
+        createMap(MAP_LV1);
+        createMonster();
+        Music.play(THEME_MUSIC_PATH);
+
+
+        stage.setScene(scene_menu);
         stage.show();
 
 
@@ -69,17 +96,15 @@ public class BombermanGame extends Application {
             @Override
             public void handle(long l) {
                 stillObjects.addAll(bomberman.getBombList());
-                render();
+                try {
+                    render();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 update();
             }
         };
         timer.start();
-        createMap(MAP_LV1);
-        bomberman = new Bomber(1, 1, Sprite.player_left.getFxImage());
-        entities.add(bomberman);
-        createMonster();
-        Music.play(THEME_MUSIC_PATH);
-        Controller.input(scene, bomberman);
 
 
     }
@@ -89,7 +114,6 @@ public class BombermanGame extends Application {
         listMonster.add(new Balloon(11, 29, Sprite.balloom_left1.getFxImage()));
         listMonster.add(new Balloon(7, 20, Sprite.balloom_left1.getFxImage()));
         listMonster.add(new Minvo(1, 11, Sprite.minvo_left1.getFxImage()));
-        //listMonster.add(new Minvo(11, 1, Sprite.minvo_left1.getFxImage()));
         listMonster.add(new Minvo(7, 3, Sprite.minvo_left1.getFxImage()));
         entities.addAll(listMonster);
     }
@@ -155,7 +179,7 @@ public class BombermanGame extends Application {
             if (countGate > 0) {
                 Entity gate = new Gate();
                 listMonster.add(gate);
-                entities.add(gate);
+                stillObjects.add(gate);
                 countGate--;
             }
         }
@@ -165,16 +189,21 @@ public class BombermanGame extends Application {
         createItemAndBomb();
         listMonster.removeIf(monster -> !monster.isAlive());
         listItem.removeIf(item -> !item.isAlive());
-
     }
 
 
-    public void render() {
+    public void render() throws FileNotFoundException {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
-        if (changeScreen)
-            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        if (changeScreen){
+            stillObjects.clear();
+            listMonster.clear();
+            listItem.clear();
+            createMonster();
+            createMap(MAP_LV2);
+            changeScreen = false;
+        }
     }
 
 
