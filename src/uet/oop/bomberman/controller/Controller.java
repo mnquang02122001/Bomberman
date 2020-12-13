@@ -11,19 +11,19 @@ public class Controller {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP:
-                    if(!bomberman.setADie) bomberman.setGoNorth(true);
+                    if (!bomberman.setADie) bomberman.setGoNorth(true);
 
                     break;
                 case DOWN:
-                    if(!bomberman.setADie) bomberman.setGoSouth(true);
+                    if (!bomberman.setADie) bomberman.setGoSouth(true);
 
                     break;
                 case LEFT:
-                    if(!bomberman.setADie) bomberman.setGoWest(true);
+                    if (!bomberman.setADie) bomberman.setGoWest(true);
 
                     break;
                 case RIGHT:
-                    if(!bomberman.setADie) bomberman.setGoEast(true);
+                    if (!bomberman.setADie) bomberman.setGoEast(true);
 
                     break;
                 case SPACE:

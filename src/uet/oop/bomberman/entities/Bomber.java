@@ -15,26 +15,27 @@ import java.util.List;
 
 public class Bomber extends Entity {
 
+    public static boolean changeScreen = false;
+    public boolean setADie;
+    public int bombCount;
+    public int flameCount;
+    public int moveWait = 6;
     private List<Bomb> bombList = new ArrayList<>();
     private int maxSpeedCount;
     private double speedMax;
-    public boolean setADie;
     private int countDieing;
-    public int bombCount;
-    public int flameCount;
-    public int moveWait=6;
-    public static boolean changeScreen=false;
+
     public Bomber(double xUnit, double yUnit, Image img) {
         super(xUnit, yUnit, img);
         life = 3;
-        waitToDie=true;
-        countToDie=200;
-        speedMax=0.200;
-        bombCount=1;
-        flameCount=1;
-        maxSpeedCount=5;
-        setADie=false;
-        countDieing=100;
+        waitToDie = true;
+        countToDie = 200;
+        speedMax = 0.200;
+        bombCount = 1;
+        flameCount = 1;
+        maxSpeedCount = 5;
+        setADie = false;
+        countDieing = 100;
     }
 
     public List<Bomb> getBombList() {
@@ -98,32 +99,33 @@ public class Bomber extends Entity {
         }
         super.render(gc);
     }
-    boolean checkMeetEnemy(){
-        for(int i=0; i< BombermanGame.listMonster.size(); i++){
-            double X = xUnit-BombermanGame.listMonster.get(i).xUnit;
-            double Y = yUnit-BombermanGame.listMonster.get(i).yUnit;
-            if(X*X+Y*Y<=0.500*0.500){
-                if(BombermanGame.listMonster.get(i) instanceof Gate){
-                    changeScreen=true;
+
+    boolean checkMeetEnemy() {
+        for (int i = 0; i < BombermanGame.listMonster.size(); i++) {
+            double X = xUnit - BombermanGame.listMonster.get(i).xUnit;
+            double Y = yUnit - BombermanGame.listMonster.get(i).yUnit;
+            if (X * X + Y * Y <= 0.500 * 0.500) {
+                if (BombermanGame.listMonster.get(i) instanceof Gate) {
+                    changeScreen = true;
                 }
                 return true;
             }
         }
         return false;
     }
-    void meetItem(){
-        for(int i=0; i< BombermanGame.listItem.size(); i++){
-            double X = xUnit-BombermanGame.listItem.get(i).xUnit;
-            double Y = yUnit-BombermanGame.listItem.get(i).yUnit;
-            if(X*X+Y*Y<=0.500*0.500) {
-                if(BombermanGame.listItem.get(i) instanceof PowerUpBombs) {
+
+    void meetItem() {
+        for (int i = 0; i < BombermanGame.listItem.size(); i++) {
+            double X = xUnit - BombermanGame.listItem.get(i).xUnit;
+            double Y = yUnit - BombermanGame.listItem.get(i).yUnit;
+            if (X * X + Y * Y <= 0.500 * 0.500) {
+                if (BombermanGame.listItem.get(i) instanceof PowerUpBombs) {
                     bombCount++;
-                    System.out.println(BombermanGame.listItem.get(i) instanceof PowerUpBombs?100:0);
-                }
-                else if(BombermanGame.listItem.get(i) instanceof PowerUpFlames)
+                    System.out.println(BombermanGame.listItem.get(i) instanceof PowerUpBombs ? 100 : 0);
+                } else if (BombermanGame.listItem.get(i) instanceof PowerUpFlames)
                     flameCount++;
-                else if(BombermanGame.listItem.get(i) instanceof PowerUpSpeed) {
-                    if(maxSpeedCount>0) {
+                else if (BombermanGame.listItem.get(i) instanceof PowerUpSpeed) {
+                    if (maxSpeedCount > 0) {
                         speedMax += 0.05;
                         maxSpeedCount--;
                     }
@@ -137,50 +139,48 @@ public class Bomber extends Entity {
     }
 
 
-    public void reset(){
-        xUnit=1;
-        yUnit=1;
+    public void reset() {
+        xUnit = 1;
+        yUnit = 1;
         updateLocationX();
         updateLocationY();
     }
-    public void die(){
-        if(life>0){
 
-            if(waitToDie==false){
+    public void die() {
+        if (life > 0) {
+
+            if (waitToDie == false) {
                 life--;
-                waitToDie=true;
-                countToDie=200;
-                setADie=true;
+                waitToDie = true;
+                countToDie = 200;
+                setADie = true;
             }
-            System.out.println(life+"/");
-        }
-
-        else setAlive(false);
+            System.out.println(life + "/");
+        } else setAlive(false);
     }
 
     @Override
     public void update() {
         Wait();
-        if(danger){
-            if(!checkDanger()) die();
+        if (danger) {
+            if (!checkDanger()) die();
         }
-        if(setADie){
-            if(countDieing>0){
+        if (setADie) {
+            if (countDieing > 0) {
                 countDieing--;
-            }
-            else{
+            } else {
                 reset();
-                countDieing=100;
-                setADie=false;
+                countDieing = 100;
+                setADie = false;
             }
         }
-        if(checkMeetEnemy()) die();
+        if (checkMeetEnemy()) die();
 
         meetItem();
-        if(moveWait>0) moveWait--;
+        if (moveWait > 0) moveWait--;
         else {
             move(speedMax);
-            moveWait=6;
+            moveWait = 2;
         }
         animate();
     }
