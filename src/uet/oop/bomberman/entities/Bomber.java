@@ -151,7 +151,7 @@ public class Bomber extends Entity {
                 countToDie=200;
                 setADie=true;
             }
-            //System.out.println(life+"/");
+            System.out.println(life+"/");
         }
 
         else setAlive(false);

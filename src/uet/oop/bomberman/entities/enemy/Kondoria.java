@@ -19,4 +19,5 @@ public class Kondoria extends Enemy {
         }
         img = Sprite.kondoria_dead.getFxImage();
     }
+
 }

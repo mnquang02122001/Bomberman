@@ -1,3 +1,4 @@
+
 package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
@@ -200,11 +201,12 @@ public class BombermanGame extends Application {
             stillObjects.clear();
             listMonster.clear();
             listItem.clear();
-            createMonster();
             createMap(MAP_LV2);
             changeScreen = false;
         }
     }
+
+
 
 
 }
