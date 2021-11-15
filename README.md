@@ -1,2 +1,2 @@
-# Bài tập lớn OOP - Bomberman Game
+#Bomberman Game with Java
 <img src="res/demo.png" alt="drawing" width="400"/>
